@@ -5,11 +5,11 @@ import sys
 import time
 import dart
 
+######## SIMPLE TERMINAL FRONTEND
+
 BLUE = '\033[95m'
 OKBLUE = '\033[94m'
 GREEN = '\033[32m'
-WARNING = '\033[93m'
-FAIL = '\033[91m'
 ENDC = '\033[0m'
 BOLD = '\033[1m'
 
@@ -95,11 +95,11 @@ class Leg:
             self.last_user_darts = user_score
             if self.user_points - user_score > 1:
                 self.user_points -= user_score
-            elif self.user_points - user_score == 0 and user_score <= 170: # TODO: only finishable numbers
+            elif self.user_points - user_score == 0 and user_score <= 170 and user_score not in [169, 168, 166, 165, 163, 162, 159]: # bogey numbers
                 finished = input("Did you finish with a double? [Y/N]")
                 if finished in ['', 'yes', 'Yes', 'YES', 'y', 'Y']:
                     self.user_points -= user_score
-                    return True
+                    return
             self.turn = 'ai'
         elif self.turn == 'ai':
             print('AI Turn: ', end='')
@@ -113,12 +113,14 @@ class Leg:
                 time.sleep(0.8)
                 if self.ai_points <= 1:
                     if self.ai_points == 0 and dart.was_double_hit(coordinates):
-                        return True
+                        return
                     else:
                         self.ai_points = points_at_beginning
                     break
             self.turn = 'user'
-        return False
+
+    def is_leg_over(self):
+        return self.user_points == 0 or self.ai_points == 0
     
     def get_winner(self):
         if self.user_points == 0:
@@ -135,13 +137,12 @@ class Leg:
         else:
             header = f'GAME: First to {game.sets_to_win} sets'
         print(BOLD + header + ENDC)
-
         
         user_last_darts = f'({self.last_user_darts})' if self.turn != 'user' else ''
         ai_last_darts = f'({self.last_ai_darts[:-1]})' if self.turn == 'user' else ''
 
-        user_info = [f'{game.player_set_wins} sets', f'{game.player_leg_wins} legs', f'USER', f'{self.user_points}', f'{user_last_darts}']
-        ai_info = [f'{game.ai_set_wins} sets', f'{game.ai_leg_wins} legs', f'AI', f'{self.ai_points}', f'{ai_last_darts}']
+        user_info = [f'{game.player_set_wins} sets', f'{game.player_leg_wins} legs', 'USER', self.user_points, user_last_darts]
+        ai_info = [f'{game.ai_set_wins} sets', f'{game.ai_leg_wins} legs', 'AI', self.ai_points, ai_last_darts]
         
         for i, (u, a) in enumerate(zip(user_info, ai_info)):
             user_turn_color = BLUE if self.turn == 'user' and i >= 2 else OKBLUE
@@ -163,7 +164,8 @@ def main():
     while not game.is_game_over():
         # play leg
         current_leg.print_state(game)
-        if current_leg.at_oche():
+        current_leg.at_oche()
+        if current_leg.is_leg_over():
             winner = current_leg.get_winner()
             game.leg_end(winner)
             first_to_throw = 'user' if first_to_throw == 'ai' else 'ai'
@@ -180,4 +182,3 @@ if __name__ == "__main__":
 # - Show stats at the end
 # - Player can also give his fields instead of a score
 # - Show what fields players has to throw, if he can finish
-    
