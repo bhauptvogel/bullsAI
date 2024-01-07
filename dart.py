@@ -12,7 +12,6 @@ def get_field_of_coordinates(dart_coordinates: np.array) -> str:
         return '25' # single bull
     
     # TODO: refactor this math - make it more clear and match with reverse (get_target_coordinates)
-
     sector_index = int((np.arctan2(dart_coordinates[0], dart_coordinates[1]) / np.pi + 1/20 + 1) * 10) - 1
     index_to_field = [19,7,16,8,11,14,9,12,5,20,1,18,4,13,6,10,15,2,17,3]
     field = index_to_field[sector_index]
@@ -45,7 +44,7 @@ def was_double_hit(dart_coordinates: np.array) -> bool:
 
 
 def get_target_coordinates(field: str) -> np.array:
-    # TODO: Maybe do a different goal for the 25
+    # TODO: Maybe do a different goal for the 25, especially if player has strong std (TESTING)
     if field in ['B', 'Bull', 'D25', 'S25', '25', 'SB']:
         return [0,0] # double or single bull
 
@@ -69,6 +68,7 @@ def get_next_target_field(remaining_points: int, remaining_darts: int):
         return 'T20'
     
     # special case if only 2 darts left: if the first does not hit, player can still target D25
+    # TODO: Test if this really gives an advantage (at different stds)
     if remaining_darts == 2 and remaining_points >= 62 and remaining_points <= 70:
         checkout_table_2_darts = {
             61: 'T11',

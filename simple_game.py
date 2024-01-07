@@ -17,9 +17,10 @@ def parse_args():
     parser=argparse.ArgumentParser()
     parser.add_argument('--legs_to_win', type=int, default=3)
     parser.add_argument('--sets_to_win', type=int, default=1)
-    parser.add_argument('--opponent_average', type=float, default=45.0)
     parser.add_argument('--starting_points', type=int, default=501)
     parser.add_argument('--first_to_throw', type=str, default='user')
+    parser.add_argument('--ai_average', type=float, default=45.0)
+    parser.add_argument('--ai_time', type=float, default=2.4)
 
     args=parser.parse_args()
     return args
@@ -38,7 +39,7 @@ class Game:
         self.sets_to_win = sets_to_win
         self.legs_to_win = legs_to_win
 
-    def leg_end(self, winner):
+    def leg_end(self, winner) -> None:
         if winner == 'user':
             self.player_leg_wins += 1
             if self.player_leg_wins >= self.legs_to_win:
@@ -52,10 +53,10 @@ class Game:
                 self.player_leg_wins = 0
                 self.ai_leg_wins = 0
 
-    def is_game_over(self):
+    def is_game_over(self) -> bool:
         return self.player_set_wins >= self.sets_to_win or self.ai_set_wins >= self.sets_to_win
 
-    def print_winner(self):
+    def print_winner(self) -> None:
         if self.player_set_wins >= self.sets_to_win:
             print(GREEN + BOLD + 'USER WINS!' + ENDC)
         elif self.ai_set_wins >= self.sets_to_win:
@@ -84,7 +85,7 @@ class Leg:
     def is_user_input_valid(self, input: str) -> bool:
         return input.isdigit() and int(input) <= 180
 
-    def at_oche(self):
+    def at_oche(self, time_for_ai: float) -> None:
         self.last_user_darts = ''
         self.last_ai_darts = ''
         if self.turn == 'user':
@@ -110,7 +111,7 @@ class Leg:
                 print(dart.get_field_of_coordinates(coordinates), end=' ')
                 self.last_ai_darts += f'{dart.get_field_of_coordinates(coordinates)} '
                 sys.stdout.flush()
-                time.sleep(0.8)
+                time.sleep(time_for_ai / 3)
                 if self.ai_points <= 1:
                     if self.ai_points == 0 and dart.was_double_hit(coordinates):
                         return
@@ -119,10 +120,10 @@ class Leg:
                     break
             self.turn = 'user'
 
-    def is_leg_over(self):
+    def is_leg_over(self) -> bool:
         return self.user_points == 0 or self.ai_points == 0
     
-    def get_winner(self):
+    def get_winner(self) -> str:
         if self.user_points == 0:
             return 'user'
         elif self.ai_points == 0:
@@ -130,7 +131,7 @@ class Leg:
         else:
             return None
 
-    def print_state(self, game: Game):
+    def print_state(self, game: Game) -> None:
         os.system('cls' if os.name == 'nt' else 'clear')
         if game.sets_to_win == 1:
             header = f'GAME: First to {game.legs_to_win} legs'
@@ -154,7 +155,7 @@ class Leg:
 
 def main():
     inputs=parse_args()
-    std = empirical_std.emperical_std(inputs.opponent_average)
+    std = empirical_std.emperical_std(inputs.ai_average)
 
     game = Game(inputs.sets_to_win, inputs.legs_to_win)
 
@@ -164,7 +165,7 @@ def main():
     while not game.is_game_over():
         # play leg
         current_leg.print_state(game)
-        current_leg.at_oche()
+        current_leg.at_oche(inputs.ai_time)
         if current_leg.is_leg_over():
             winner = current_leg.get_winner()
             game.leg_end(winner)

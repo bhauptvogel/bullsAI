@@ -57,7 +57,7 @@ def sim_and_plot_diffent_std_values():
     for A, B in zip(std_values, std_averages):
         dict[A] = B
     
-    with open(f'sims/sim_{len(std_values)}_{samples}.txt', 'wt') as file:
+    with open(f'dart_sims/sim_{len(std_values)}_{samples}.txt', 'wt') as file:
         file.write(str(dict))
 
     plt.figure(figsize=(10, 6))
