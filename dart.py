@@ -1,9 +1,7 @@
 import numpy as np
 
-
 def dart_throw_sim(target: np.array, std_dev: float) -> np.array:
     return np.random.normal(target, std_dev, size=2)
-
 
 def get_points_of_coordinates(dart_coordinates: np.array) -> int:
     distance_to_origin = np.linalg.norm(dart_coordinates)
@@ -26,6 +24,28 @@ def get_points_of_coordinates(dart_coordinates: np.array) -> int:
         return field * 2 # double
     else:
         return 0
+    
+def get_field_of_coordinates(dart_coordinates: np.array) -> str:
+    distance_to_origin = np.linalg.norm(dart_coordinates)
+    if(distance_to_origin < 0.635):
+        return 'D25' # bullseye
+    elif(distance_to_origin < 1.6):
+        return '25' # single bull
+    
+    sector_index = int((np.arctan2(dart_coordinates[0], dart_coordinates[1]) / np.pi + 1/20 + 1) * 10) - 1
+    index_to_field = [19,7,16,8,11,14,9,12,5,20,1,18,4,13,6,10,15,2,17,3]
+    field = index_to_field[sector_index]
+    
+    if(distance_to_origin < 9.9):
+        return str(field) # single
+    elif(distance_to_origin < 10.7):
+        return 'T' + str(field) # triple
+    elif(distance_to_origin < 16.2):
+        return str(field) # single
+    elif(distance_to_origin < 17.0):
+        return 'D' + str(field) # double
+    else:
+        return str(0)
     
 def was_double_hit(dart_coordinates: np.array) -> bool:
     distance_to_origin = np.linalg.norm(dart_coordinates)
@@ -52,7 +72,7 @@ def get_target_coordinates(field: str) -> np.array:
 
 
 def get_next_target_field(remaining_points: int, remaining_darts: int):
-    # TODO: Do the occasional T19
+    # TODO: Do the occasional T19 (only if average under 120)
     if remaining_points >= 136:
         return 'T20'
     
@@ -210,28 +230,6 @@ def get_next_target_field(remaining_points: int, remaining_darts: int):
     }
 
     return checkout_table[remaining_points]
-
-
-def leg_sim(std: float) -> float:
-    point_total = 501
-    darts_thrown = 0
-
-    while point_total > 0:
-        point_total_at_beginning = point_total
-        for dart in range(3):
-            darts_thrown += 1
-            coordinates = dart_throw_sim(get_target_coordinates(get_next_target_field(point_total, 3-dart)), std)
-            point_total -= get_points_of_coordinates(coordinates)
-            if point_total <= 1:
-                if not (point_total == 0 and was_double_hit(coordinates)):
-                    point_total = point_total_at_beginning
-                break
-
-    return (501/darts_thrown)*3
-
-
-
-
 
 # hit = dart_throw(get_target('T19'), 3)
 # print(get_points(hit))

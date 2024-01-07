@@ -1,6 +1,8 @@
 import argparse
 import empirical_std
 import os
+import sys
+import time
 import dart
 
 BLUE = '\033[95m'
@@ -69,6 +71,8 @@ class Leg:
     ai_std = 0
     turn = ''
     first_to_throw = ''
+    last_ai_darts = ''
+    last_user_darts = ''
 
     def __init__(self, starting_points, first_to_throw, std) -> None:
         self.user_points = starting_points
@@ -78,25 +82,33 @@ class Leg:
         self.ai_std = std
 
     def at_oche(self):
+        self.last_user_darts = ''
+        self.last_ai_darts = ''
         if self.turn == 'user':
-            points_at_beginning = int(input())
-            if points_at_beginning > 180:
+            user_score = int(input('User turn: '))
+            if user_score > 180:
                 raise Exception('Score not possible (over 180)!')
-            self.user_points -= points_at_beginning
+            self.user_points -= user_score
+            self.last_user_darts = user_score
             if self.user_points == 0:
                 finished = input("Did you finish with a double? [Y/N]")
                 if finished == 'yes' or finished == 'y' or finished == 'Y' or finished =='Yes':
                     return True
                 else:
-                    self.user_points += points_at_beginning
+                    self.user_points += user_score
             elif self.user_points < 0:
-                self.user_points += points_at_beginning
+                self.user_points += user_score
             self.turn = 'ai'
         elif self.turn == 'ai':
+            print('AI Turn: ', end='')
             points_at_beginning = self.ai_points
             for d in range(3):
                 coordinates = dart.dart_throw_sim(dart.get_target_coordinates(dart.get_next_target_field(self.ai_points, 3-d)), self.ai_std)
                 self.ai_points -= dart.get_points_of_coordinates(coordinates)
+                print(dart.get_field_of_coordinates(coordinates), end=' ')
+                self.last_ai_darts += f'{dart.get_field_of_coordinates(coordinates)} '
+                sys.stdout.flush()
+                time.sleep(0.8)
                 if self.ai_points <= 1:
                     if self.ai_points == 0 and dart.was_double_hit(coordinates):
                         return True
@@ -120,18 +132,22 @@ class Leg:
             header = f'GAME: First to {game.legs_to_win} legs'
         else:
             header = f'GAME: First to {game.sets_to_win} sets'
-        print(ENDC + BOLD + header + ENDC)
+        print(BOLD + header + ENDC)
 
-        if game.sets_to_win > 1:
-            print(OKBLUE +f'{game.player_set_wins} sets\t\t\t\t{game.ai_set_wins} sets')
-        print(OKBLUE + f'{game.player_leg_wins} legs\t\t\t\t{game.ai_leg_wins} legs')
+        
+        user_last_darts = f'({self.last_user_darts})' if self.turn != 'user' else ''
+        ai_last_darts = f'({self.last_ai_darts[:-1]})' if self.turn == 'user' else ''
 
-        user_turn_color = ENDC + BLUE if self.turn == 'user' else ENDC + OKBLUE
-        ai_turn_color = ENDC +  BLUE if self.turn != 'user' else ENDC + OKBLUE
-
-        print(user_turn_color + 'USER\t\t\t\t' + ai_turn_color + 'AI')
-        print(user_turn_color + f'{self.user_points}\t\t\t\t' + ai_turn_color + f'{self.ai_points}')
-
+        user_info = [f'{game.player_set_wins} sets', f'{game.player_leg_wins} legs', f'USER', f'{self.user_points}', f'{user_last_darts}']
+        ai_info = [f'{game.ai_set_wins} sets', f'{game.ai_leg_wins} legs', f'AI', f'{self.ai_points}', f'{ai_last_darts}']
+        
+        for i, (u, a) in enumerate(zip(user_info, ai_info)):
+            user_turn_color = BLUE if self.turn == 'user' and i >= 2 else OKBLUE
+            ai_turn_color = BLUE if self.turn != 'user' and i >= 2 else OKBLUE
+            if self.first_to_throw == 'user':
+                print(f'{user_turn_color}{u:<20}{ai_turn_color}{a:>20}' + ENDC)
+            else:
+                print(f'{ai_turn_color}{a:<20}{user_turn_color}{u:>20}' + ENDC)
 
 def main():
     inputs=parse_args()
@@ -150,7 +166,8 @@ def main():
             game.leg_end(winner)
             first_to_throw = 'user' if first_to_throw == 'ai' else 'ai'
             current_leg = Leg(inputs.starting_points, first_to_throw, std)
-            
+
+    current_leg.print_state(game)
     game.print_winner()
 
 
@@ -158,9 +175,7 @@ if __name__ == "__main__":
     main()
 
 # TODOS
-# - Show the player who is throwing first in this leg on the left
-# - Show what which fields AI has thrown (with time delay)
+# - Show stats at the end
 # - Player can also give his fields instead of a score
 # - Show what fields players has to throw, if he can finish
-# - Show stats at the end
     
