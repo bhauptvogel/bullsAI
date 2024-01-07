@@ -81,23 +81,25 @@ class Leg:
         self.turn = first_to_throw
         self.ai_std = std
 
+    def is_user_input_valid(self, input: str) -> bool:
+        return input.isdigit() and int(input) <= 180
+
     def at_oche(self):
         self.last_user_darts = ''
         self.last_ai_darts = ''
         if self.turn == 'user':
-            user_score = int(input('User turn: '))
-            if user_score > 180:
-                raise Exception('Score not possible (over 180)!')
-            self.user_points -= user_score
+            user_score = ''
+            while not self.is_user_input_valid(user_score):
+                user_score = input('User turn: ')
+            user_score = int(user_score)
             self.last_user_darts = user_score
-            if self.user_points == 0:
+            if self.user_points - user_score > 1:
+                self.user_points -= user_score
+            elif self.user_points - user_score == 0 and user_score <= 170: # TODO: only finishable numbers
                 finished = input("Did you finish with a double? [Y/N]")
-                if finished == 'yes' or finished == 'y' or finished == 'Y' or finished =='Yes':
+                if finished in ['', 'yes', 'Yes', 'YES', 'y', 'Y']:
+                    self.user_points -= user_score
                     return True
-                else:
-                    self.user_points += user_score
-            elif self.user_points < 0:
-                self.user_points += user_score
             self.turn = 'ai'
         elif self.turn == 'ai':
             print('AI Turn: ', end='')
