@@ -24,12 +24,13 @@ def leg_sim(std: float) -> float:
 
 def sim_and_plot_diffent_std_values():
     std_values = np.linspace(8.0, 0.1, 500)
-    samples = 100000
+    samples = 10
 
     print(f"Number of std_values: {len(std_values)}")
     print(f"Number of sim samples per std_value: {samples}")
 
     indices = np.arange(std_values.size)
+    np.random.seed(1)
     np.random.shuffle(indices)
 
     std_averages = np.zeros_like(std_values)
@@ -51,7 +52,7 @@ def sim_and_plot_diffent_std_values():
     with open(f'dart_sims/sim_{len(std_values)}_{samples}.txt', 'wt') as file:
         file.write(str({A: B for A, B in zip(std_values, std_averages)}))
 
-    print(f'Finished! Elapsed time: {round(end-start,2)} s \n Results in dart_sims/sim_{len(std_values)}_{samples}.txt')
+    print(f'Finished! Elapsed time: {round(end-start,2)} s \nResults in dart_sims/sim_{len(std_values)}_{samples}.txt')
     
     plt.figure(figsize=(10, 6))
     plt.plot(std_values, np.array(std_averages))
