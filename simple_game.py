@@ -123,17 +123,15 @@ class Leg:
                 player_score = input('Player turn: ')
             player_score = int(player_score)
             self.last_player_darts = player_score
+            self.players_darts_thrown += 3
             if self.player_points_total - player_score > 1:
                 self.player_points_total -= player_score
-                self.players_darts_thrown += 3
             elif self.player_points_total - player_score == 0 and player_score <= 170 and player_score not in [169, 168, 166, 165, 163, 162, 159]: # bogey numbers
                 finished = input("Did you finish with a double? [Y/N]")
                 if finished in ['', 'yes', 'Yes', 'YES', 'y', 'Y']:
                     self.player_points_total -= player_score
-                    if player_score > 110 or player_score in [109, 108, 106, 105, 103, 102, 99]:
-                        self.players_darts_thrown += 3
-                    else:
-                        self.players_darts_thrown += int(input("How many darts did you need?"))
+                    if player_score <= 110 and player_score not in [109, 108, 106, 105, 103, 102, 99]:
+                        self.players_darts_thrown += int(input("How many darts did you need?")) - 3
                     return
             self.turn = 'ai'
         elif self.turn == 'ai':
