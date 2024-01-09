@@ -221,6 +221,5 @@ if __name__ == "__main__":
     main()
 
 # TODOS
-# - Show stats at the end
 # - Player can also give his fields instead of a score
 # - Show what fields players has to throw, if he can finish

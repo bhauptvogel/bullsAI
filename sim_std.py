@@ -23,15 +23,16 @@ def leg_sim(std: float) -> float:
     return (501/darts_thrown)*3
 
 def sim_and_plot_diffent_std_values():
-    std_values = np.linspace(8.0, 0.1, 500)
-    samples = 10
+    std_values = np.linspace(5.0, 0.1, 500)
+    std_values = np.arange(0.1, 5.0, 0.01)
+    samples = 100000
 
     print(f"Number of std_values: {len(std_values)}")
     print(f"Number of sim samples per std_value: {samples}")
 
     indices = np.arange(std_values.size)
-    np.random.seed(1)
-    np.random.shuffle(indices)
+    # np.random.seed(1)
+    # np.random.shuffle(indices)
 
     std_averages = np.zeros_like(std_values)
 
@@ -41,6 +42,7 @@ def sim_and_plot_diffent_std_values():
     def process_index(i):
         averages = [leg_sim(std_values[i]) for _ in range(samples)]
         std_averages[i] = np.mean(np.array(averages))
+        print(std_values[i], std_averages[i])
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [executor.submit(process_index, i) for i in indices]
