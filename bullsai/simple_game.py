@@ -1,9 +1,9 @@
 import argparse
-import empirical_std
 import os
 import sys
 import time
 from bullsai import dart
+from bullsai import empirical_std
 
 ######## SIMPLE TERMINAL FRONTEND
 
@@ -40,9 +40,12 @@ class Game:
     ai_total_darts_thrown = 0
     ai_total_points_scored = 0
 
-    def __init__(self, sets_to_win, legs_to_win) -> None:
+    opponent_name = 'AI'
+
+    def __init__(self, sets_to_win, legs_to_win, opponent_name) -> None:
         self.sets_to_win = sets_to_win
         self.legs_to_win = legs_to_win
+        self.opponent_name = opponent_name
 
     def leg_end(self, winner) -> None:
         if winner == 'player':
@@ -71,7 +74,7 @@ class Game:
         if self.player_set_wins >= self.sets_to_win:
             print(GREEN + BOLD + 'Player WINS!' + ENDC)
         elif self.ai_set_wins >= self.sets_to_win:
-            print(GREEN + BOLD + 'AI WINS!' + ENDC)
+            print(GREEN + BOLD + f'{self.opponent_name} WINS!' + ENDC)
         else:
             print('Game not over!' + ENDC)
 
@@ -84,7 +87,7 @@ class Game:
         header = "| {:^{}} | {:^{}} |".format("Player", col_width, "Average", col_width)
         divider = "+" + "-" * (col_width + 2) + "+" + "-" * (col_width + 2) + "+"
         human_row = "| {:<{}} | {:^{}} |".format("Human Player", col_width, player_avg, col_width)
-        ai_row = "| {:<{}} | {:^{}} |".format("AI Opponent", col_width, ai_avg, col_width)
+        ai_row = "| {:<{}} | {:^{}} |".format(f"{self.opponent_name} Opponent", col_width, ai_avg, col_width)
 
         for row in [top_border, header, divider, human_row, divider, ai_row, divider]:
             print(row)
@@ -100,19 +103,33 @@ class Leg:
     first_to_throw = ''
     last_ai_darts = ''
     last_player_darts = ''
+    opponent_name = 'AI'
 
     players_darts_thrown = 0
     ai_darts_thrown = 0
 
-    def __init__(self, starting_points, first_to_throw, std) -> None:
+    def __init__(self, starting_points, first_to_throw, std, opponent_name) -> None:
         self.player_points_total = starting_points
         self.ai_points_total = starting_points
         self.first_to_throw = first_to_throw
         self.turn = first_to_throw
         self.ai_std = std
+        self.opponent_name = opponent_name
 
     def is_player_input_valid(self, input: str) -> bool:
         return input.isdigit() and int(input) <= 180 # TODO: Give Feedback if wrong
+    
+    def is_amount_of_darts_needed_valid(self, darts_needed: str, points_scored: int) -> None:
+        if not darts_needed.isdigit():
+            return False
+        darts_needed = int(darts_needed)
+        if darts_needed <= 0 or darts_needed > 3:
+            return False
+        if darts_needed == 1:
+            return points_scored <= 40 and points_scored % 2 == 0
+        elif darts_needed == 2:
+            return points_scored <= 110 and points_scored not in [109, 108, 106, 105, 103, 102, 99]
+        return True
 
     def at_oche(self, time_for_ai: float) -> None:
         self.last_player_darts = ''
@@ -131,11 +148,14 @@ class Leg:
                 if finished in ['', 'yes', 'Yes', 'YES', 'y', 'Y']:
                     self.player_points_total -= player_score
                     if player_score <= 110 and player_score not in [109, 108, 106, 105, 103, 102, 99]:
-                        self.players_darts_thrown += int(input("How many darts did you need?")) - 3
+                        darts_needed = ''
+                        while not self.is_amount_of_darts_needed_valid(darts_needed, player_score):
+                            darts_needed = input("How many darts did you need?")
+                        self.players_darts_thrown += int(darts_needed) - 3
                     return
             self.turn = 'ai'
         elif self.turn == 'ai':
-            print('AI Turn: ', end='')
+            print(f'{self.opponent_name} Turn: ', end='')
             points_at_beginning = self.ai_points_total
             for d in range(3):
                 coordinates = dart.dart_throw_sim(dart.get_target_coordinates(dart.get_next_target_field(self.ai_points_total, 3-d)), self.ai_std)
@@ -176,7 +196,7 @@ class Leg:
         ai_last_darts = f'({self.last_ai_darts[:-1]})' if self.turn == 'player' else ''
 
         player_info = [f'{game.player_set_wins} sets', f'{game.player_leg_wins} legs', 'PLAYER', self.player_points_total, player_last_darts]
-        ai_info = [f'{game.ai_set_wins} sets', f'{game.ai_leg_wins} legs', 'AI', self.ai_points_total, ai_last_darts]
+        ai_info = [f'{game.ai_set_wins} sets', f'{game.ai_leg_wins} legs', self.opponent_name, self.ai_points_total, ai_last_darts]
         
         if game.sets_to_win == 1:
             player_info.pop(0)
@@ -190,33 +210,30 @@ class Leg:
             else:
                 print(f'{ai_turn_color}{a:<20}{player_turn_color}{u:>20}' + ENDC)
 
-def main():
-    inputs=parse_args()
-    std = empirical_std.emperical_std(inputs.ai_average)
-
-    game = Game(inputs.sets_to_win, inputs.legs_to_win)
-
-    first_to_throw = inputs.first_to_throw
-    current_leg = Leg(inputs.starting_points, first_to_throw, std)
+def play_game(ai_average: float, sets_to_win: int = 1, legs_to_win: int = 3, first_to_throw: str = 'player', starting_points: int = 501, ai_time: float = 0.8, opponent_name: str = 'AI'):
+    std = empirical_std.emperical_std(ai_average)
+    game = Game(sets_to_win, legs_to_win, opponent_name)
+    current_leg = Leg(starting_points, first_to_throw, std, opponent_name)
 
     while not game.is_game_over():
         # play leg
         current_leg.print_state(game)
-        current_leg.at_oche(inputs.ai_time)
+        current_leg.at_oche(ai_time)
         if current_leg.is_leg_over():
             winner = current_leg.get_winner()
             game.leg_end(winner)
             game.add_leg_stats(current_leg.players_darts_thrown, 501-current_leg.player_points_total, current_leg.ai_darts_thrown, 501 - current_leg.ai_points_total)
             first_to_throw = 'player' if first_to_throw == 'ai' else 'ai'
-            current_leg = Leg(inputs.starting_points, first_to_throw, std)
+            current_leg = Leg(starting_points, first_to_throw, std, opponent_name)
 
     current_leg.print_state(game)
     game.print_winner()
     game.print_stats()
-
+    
 
 if __name__ == "__main__":
-    main()
+    inputs=parse_args()
+    play_game(inputs.ai_average, inputs.sets_to_win, inputs.legs_to_win, inputs.first_to_throw, inputs.starting_points, inputs.ai_time)
 
 # TODOS
 # - Player can also give his fields instead of a score
