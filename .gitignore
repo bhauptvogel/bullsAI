@@ -161,3 +161,4 @@ cython_debug/
 
 dart_sims/
 fantasy/
+.vscode/

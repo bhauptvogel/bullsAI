@@ -17,7 +17,7 @@ def leg_sim(std: float) -> float:
             point_total -= dart.get_points_of_coordinates(coordinates)
             if point_total <= 1:
                 if point_total == 0 and dart.was_double_hit(coordinates):
-                    darts_thrown -= 2-d
+                    darts_thrown -= (2-d)
                 else:
                     point_total = point_total_at_beginning
                 break
@@ -39,7 +39,7 @@ def sim_and_plot_diffent_std_values():
     # compute averages
     start = time.time()
 
-    LOG_FILE = f'dart_sims/sim_{len(std_values)}_{samples}.txt'
+    LOG_FILE = f'bullsai/dart_sims/sim_{len(std_values)}_{samples}.txt'
 
     # reset LOG_FILE
     with open(LOG_FILE, 'wt') as file:
