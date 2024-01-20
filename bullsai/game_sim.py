@@ -215,8 +215,8 @@ class Leg:
     def __repr__(self) -> str:
         output = ''
         
-        last_darts_of_player = f'({self.log[-1]['points_scored']})' if self.log and self.log[-1]['player'] == 'PLAYER' else ''
-        last_darts_of_bot = f'({self.log[-1]['fields']})' if self.log and self.log[-1]['player'] == self.game_information.bot_name else ''
+        last_darts_of_player = f'({self.log[-1]["points_scored"]})' if self.log and self.log[-1]['player'] == 'PLAYER' else ''
+        last_darts_of_bot = f'({self.log[-1]["fields"]})' if self.log and self.log[-1]['player'] == self.game_information.bot_name else ''
 
         player_info = [f'{self.game_information.player_legs_won} legs', 'PLAYER', self.player_score, last_darts_of_player]
         bot_info = [f'{self.game_information.bot_legs_won} legs', self.game_information.bot_name, self.bot_score, last_darts_of_bot]
