@@ -21,20 +21,4 @@ def interpolate(y_val, lower, higher):
 
 def emperical_std(average: float) -> float:
     lower, higher = find_closest_values(average)
-    return interpolate(average, lower, higher)
-
-# new_y = np.linspace(20, 167, 10000)
-
-# estimated_x_values = []
-# for val in new_y:
-#     estimated_x = emperical_std(val, data)
-#     estimated_x_values.append(estimated_x)
-
-# Plot the best fitting model
-# plt.figure(figsize=(10, 5))
-# plt.plot(estimated_x_values, new_y, label='Estimated')
-# plt.plot(np.array(list(data.keys())), np.array(list(data.values())), label='Data Points')
-# plt.title('Best Fit Model')
-# plt.legend()
-# plt.show()
-
+    return 0 if average >= 167 else interpolate(average, lower, higher)

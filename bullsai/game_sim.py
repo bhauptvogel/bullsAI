@@ -241,7 +241,7 @@ class Leg:
 
 
 def handle_game(game_id: str, bot_average: float, sets_to_win: int = 1, legs_to_win: int = 3, first_to_throw: str = 'player', starting_points: int = 501, bot_time: float = 0.8, bot_name: str = 'BOT', save_log_location: str = 'bullsai/game_logs/'):
-    game = Game(sets_to_win=sets_to_win, legs_to_win=legs_to_win, bot_std=empirical_std.emperical_std(bot_average), starting_score=starting_points, bot_name=bot_name) # TODO: Bot Std from empirical std
+    game = Game(sets_to_win=sets_to_win, legs_to_win=legs_to_win, bot_std=empirical_std.emperical_std(bot_average), starting_score=starting_points, bot_name=bot_name)
     leg_turn = first_to_throw
     leg_log = []
 
@@ -284,7 +284,7 @@ def handle_game(game_id: str, bot_average: float, sets_to_win: int = 1, legs_to_
 
 if __name__ == '__main__':
     inputs=parse_args()
-    handle_game(f'{inputs.bot_average}_{datetime.now().strftime("%d%m%Y%H%M")}', inputs.bot_average, inputs.sets_to_win, inputs.legs_to_win, inputs.first_to_throw, inputs.starting_points, inputs.bot_time)
+    handle_game(f'{datetime.now().strftime("%d%m%Y%H%M")}_{inputs.bot_average}', inputs.bot_average, inputs.sets_to_win, inputs.legs_to_win, inputs.first_to_throw, inputs.starting_points, inputs.bot_time)
 
 # OTHER TODOS:
 # - Player can also give his fields instead of a score
