@@ -1,6 +1,9 @@
 import os
+import argparse
+import json
 import time
 import sys
+from datetime import datetime
 from dataclasses import dataclass
 from bullsai import dart
 from bullsai import empirical_std
@@ -11,11 +14,21 @@ GREEN = '\033[32m'
 ENDC = '\033[0m'
 BOLD = '\033[1m'
 
+def parse_args():
+    parser=argparse.ArgumentParser()
+    parser.add_argument('-l', '--legs_to_win', type=int, default=3)
+    parser.add_argument('-s', '--sets_to_win', type=int, default=1)
+    parser.add_argument('--starting_points', type=int, default=501)
+    parser.add_argument('--first_to_throw', type=str, default='player')
+    parser.add_argument('-a', '--bot_average', type=float, default=45.0)
+    parser.add_argument('-t', '--bot_time', type=float, default=2.4)
+
+    args=parser.parse_args()
+    return args
+
 @dataclass
 class Game:
-
-    # PLAYER 'player'
-    # AI Bot 'bot'
+    # PLAYER 'player', AI Bot 'BOT'
 
     sets_to_win: int
     legs_to_win: int
@@ -32,18 +45,19 @@ class Game:
     def new_leg_won(self, winner: str) -> None:
 
         def _new_set_won(winner):
-            if winner == 'PLAYER':
+            if winner == 'player':
                 self.player_sets_won += 1
             elif winner == self.bot_name:
                 self.bot_sets_won += 1
 
-            self.player_legs_won = 0
-            self.bot_legs_won = 0
+            if self.sets_to_win > 1:
+                self.player_legs_won = 0
+                self.bot_legs_won = 0
 
-        if winner == 'PLAYER':
+        if winner == 'player':
             self.player_legs_won += 1
             if self.player_legs_won == self.legs_to_win:
-                _new_set_won('PLAYER')
+                _new_set_won('player')
         elif winner == self.bot_name:
             self.bot_legs_won += 1
             if self.bot_legs_won == self.legs_to_win:
@@ -54,17 +68,31 @@ class Game:
     def is_game_over(self) -> bool:
         return self.player_sets_won == self.sets_to_win or self.bot_sets_won == self.sets_to_win
  
-    def __repr__(self):
+    def get_winner(self) -> str:
+        if self.player_sets_won == self.sets_to_win:
+            return 'PLAYER'
+        elif self.bot_sets_won == self.sets_to_win:
+            return self.bot_name
+        else:
+            raise ValueError('Game is not over yet')
+
+    def __repr__(self) -> str:
         output = ''
 
         if self.is_game_over():
-            output += f'{BOLD}GAME OVER!{ENDC}\n'
-            if self.player_sets_won == self.sets_to_win:
-                output += f'{GREEN}PLAYER won!{ENDC}\n'
-            elif self.bot_sets_won == self.sets_to_win:
-                output += f'{GREEN}{self.bot_name} won!{ENDC}\n'
+            if self.sets_to_win == 1:
+                winner_score = self.player_legs_won if self.player_legs_won > self.bot_legs_won else self.bot_legs_won
+                loser_score = self.player_legs_won if self.player_legs_won < self.bot_legs_won else self.bot_legs_won
             else:
-                raise ValueError('Game is over but no winner was found')
+                winner_score = self.player_sets_won if self.player_sets_won > self.bot_sets_won else self.bot_sets_won
+                loser_score = self.player_sets_won if self.player_sets_won < self.bot_sets_won else self.bot_sets_won
+
+            output += f'{BOLD}GAME OVER!{ENDC}\n'
+            output += f'{GREEN}{self.get_winner()} won {winner_score} - {loser_score}!{ENDC}\n'
+        else:
+            output += f'{BOLD}GAME: First to {self.sets_to_win} sets{ENDC}\n'
+            output += f'PLAYER -> {self.player_sets_won} sets - {self.player_legs_won} legs\n'
+            output += f'{self.bot_name} -> {self.bot_sets_won} sets - {self.bot_legs_won} legs\n'
 
         return output
 
@@ -77,14 +105,16 @@ class Leg:
 
     turn: str # either 'bot' or 'player'
     first_to_throw: str
+    bot_time: float
     game_information: Game
 
-    def __init__(self, first_to_throw: str, game_information: Game) -> None:
+    def __init__(self, first_to_throw: str, game_information: Game, bot_time: float) -> None:
         self.player_score = game_information.starting_score
         self.bot_score = game_information.starting_score
         self.first_to_throw = first_to_throw
         self.turn = first_to_throw
         self.game_information = game_information
+        self.bot_time = bot_time
 
     def visit(self) -> None:
         if self.turn == 'player':
@@ -97,7 +127,7 @@ class Leg:
             raise ValueError(f'Invalid turn: {self.turn}')
 
     def _is_checkout(self, score: int, points: int) -> bool:
-        return score - points == 0 and score <= 170 and score not in [169, 168, 166, 165, 163, 162, 159]
+        return score - points == 0 and score <= 170 and score not in [169, 168, 166, 165, 163, 162, 159] # bogey numbers
 
     def _player_turn(self) -> None:
 
@@ -121,7 +151,7 @@ class Leg:
             return int(darts_needed) if _validate_amount_of_darts(darts_needed, points_scored) else _get_player_darts_thrown(points_scored)
 
         def _finished_with_double() -> bool:
-            return input("Did you finish with a double? [Y/N]") in ['', 'yes', 'Yes', 'YES', 'y', 'Y']
+            return input("Did you finish with a double? [Y/N] ") in ['', 'yes', 'Yes', 'YES', 'y', 'Y']
 
         if self.player_score - player_points <= 1:
             if self._is_checkout(self.player_score, player_points) and _finished_with_double():
@@ -144,7 +174,7 @@ class Leg:
         darts_thrown = 3
 
         def _sim_bot_throw(remaining_darts: int) -> float:
-            return dart.dart_throw_sim(dart.get_target_coordinates(dart.get_next_target_field(self.bot_score, remaining_darts)), self.game_information.bot_std)
+            return dart.dart_throw_sim(dart.get_target_coordinates(dart.get_next_target_field(self.bot_score-bot_points, remaining_darts)), self.game_information.bot_std)
 
         for dart_index in range(3):
             bot_coordinates = _sim_bot_throw(3 - dart_index)
@@ -153,7 +183,7 @@ class Leg:
 
             print(dart.get_field_of_coordinates(bot_coordinates), end=' ')
             sys.stdout.flush()
-            time.sleep(0.8)
+            time.sleep(self.bot_time)
 
             if self.bot_score - bot_points <= 1:
                 if self._is_checkout(self.bot_score, bot_points) and dart.was_double_hit(bot_coordinates):
@@ -176,36 +206,33 @@ class Leg:
     
     def get_winner(self) -> str:
         if self.player_score == 0:
-            return 'PLAYER'
+            return 'player'
         elif self.bot_score == 0:
             return self.game_information.bot_name
         else:
             raise ValueError('Leg is not over yet')
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         output = ''
-
-        if self.game_information:
-
-            if self.game_information.sets_to_win == 1:
-                output += f'{BOLD}GAME: First to {self.game_information.legs_to_win} legs{ENDC}\n'
-                player_info = [f'{self.game_information.player_legs_won} legs']
-                bot_info = [f'{self.game_information.bot_legs_won} legs']
-            else:
-                output += f'{BOLD}SET: First to {self.game_information.sets_to_win} sets{ENDC}\n'
-                player_info = [f'{self.game_information.player_sets_won} sets', f'{self.game_information.player_legs_won} legs']
-                bot_info = [f'{self.game_information.bot_sets_won} sets', f'{self.game_information.bot_legs_won} legs']
-
+        
         last_darts_of_player = f'({self.log[-1]['points_scored']})' if self.log and self.log[-1]['player'] == 'PLAYER' else ''
         last_darts_of_bot = f'({self.log[-1]['fields']})' if self.log and self.log[-1]['player'] == self.game_information.bot_name else ''
 
-        player_info.extend(['PLAYER', self.player_score, last_darts_of_player])
-        bot_info.extend([self.game_information.bot_name, self.bot_score, last_darts_of_bot])
+        player_info = [f'{self.game_information.player_legs_won} legs', 'PLAYER', self.player_score, last_darts_of_player]
+        bot_info = [f'{self.game_information.bot_legs_won} legs', self.game_information.bot_name, self.bot_score, last_darts_of_bot]
 
-        # TODO: Fix coloring
+        if self.game_information.sets_to_win == 1:
+            output += f'{BOLD}GAME: First to {self.game_information.legs_to_win} legs{ENDC}\n'
+            coloring = 1
+        else:
+            output += f'{BOLD}GAME: First to {self.game_information.sets_to_win} sets{ENDC}\n'
+            player_info.insert(0, f'{self.game_information.player_sets_won} sets')
+            bot_info.insert(0, f'{self.game_information.bot_sets_won} sets')
+            coloring = 2
+
         for i, (u, a) in enumerate(zip(player_info, bot_info)):
-            player_turn_color = BLUE if self.turn == 'player' and i >= 2 else OKBLUE
-            ai_turn_color = BLUE if self.turn != 'player' and i >= 2 else OKBLUE
+            player_turn_color = BLUE if self.turn == 'player' and i >= coloring else OKBLUE
+            ai_turn_color = BLUE if self.turn != 'player' and i >= coloring else OKBLUE
             if self.first_to_throw == 'player':
                 output += f'{player_turn_color}{u:<20}{ai_turn_color}{a:>20}{ENDC}\n' 
             else:
@@ -213,17 +240,30 @@ class Leg:
         return output
 
 
-def handle_game():
-    leg_turn = 'player'
-    game = Game(sets_to_win=1, legs_to_win=1, bot_std=1.0, starting_score=501)
-    game_log = []
+def handle_game(game_id: str, bot_average: float, sets_to_win: int = 1, legs_to_win: int = 3, first_to_throw: str = 'player', starting_points: int = 501, bot_time: float = 0.8, bot_name: str = 'BOT', save_log_location: str = 'bullsai/game_logs/'):
+    game = Game(sets_to_win=sets_to_win, legs_to_win=legs_to_win, bot_std=empirical_std.emperical_std(bot_average), starting_score=starting_points, bot_name=bot_name) # TODO: Bot Std from empirical std
+    leg_turn = first_to_throw
+    leg_log = []
 
     def _clear_console():
         os.system('cls' if os.name == 'nt' else 'clear')
 
+    def _save_game_log():
+        game_log = {
+            'id': game_id,
+            'player_home': 'PLAYER' if first_to_throw == 'player' else bot_name,
+            'player_away': bot_name if first_to_throw == 'player' else 'PLAYER',
+            'legs_to_win': legs_to_win,
+            'sets_to_win': sets_to_win,
+            'winner': game.get_winner(),
+            'log': leg_log
+        }
+        with open(f'{save_log_location}{game_id}.json', 'wt') as f:
+            json.dump(game_log, f)
+
     # game loop
     while not game.is_game_over():
-        leg = Leg(leg_turn, game)
+        leg = Leg(leg_turn, game, bot_time)
         
         # leg loop
         while not leg.is_leg_over():
@@ -231,15 +271,21 @@ def handle_game():
             print(leg)
             leg.visit()
         
-        game_log.append(leg.log)
+        leg_log.append(leg.log)
         game.new_leg_won(leg.get_winner())
         leg_turn = 'player' if leg_turn == 'bot' else 'bot'
 
-    # TODO: Create game log json
+    # game over
     _clear_console()
+    _save_game_log()
     print(leg)
     print(game)
 
 
 if __name__ == '__main__':
-    handle_game()
+    inputs=parse_args()
+    handle_game(f'{inputs.bot_average}_{datetime.now().strftime("%d%m%Y%H%M")}', inputs.bot_average, inputs.sets_to_win, inputs.legs_to_win, inputs.first_to_throw, inputs.starting_points, inputs.bot_time)
+
+# OTHER TODOS:
+# - Player can also give his fields instead of a score
+# - Show what fields players has to throw, if he can finish
