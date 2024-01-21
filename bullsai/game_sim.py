@@ -97,21 +97,15 @@ class Game:
 
 class Leg:
 
-    log: list = []
-
-    player_score: int
-    bot_score: int
-
-    turn: str # either 'bot' or 'player'
-    first_to_throw: str
-    bot_time: float
-    game_information: Game
-
     def __init__(self, first_to_throw: str, game_information: Game, bot_time: float) -> None:
+        self.log: list = []
+
         self.player_score = game_information.starting_score
         self.bot_score = game_information.starting_score
+
         self.first_to_throw = first_to_throw
         self.turn = first_to_throw
+        
         self.game_information = game_information
         self.bot_time = bot_time
 
