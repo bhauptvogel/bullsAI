@@ -6,6 +6,7 @@ import sys
 from datetime import datetime
 from dataclasses import dataclass
 from bullsai import dart
+from bullsai import stats
 from bullsai import empirical_std
 
 BLUE = '\033[95m'
@@ -21,7 +22,7 @@ def parse_args():
     parser.add_argument('--starting_points', type=int, default=501)
     parser.add_argument('--first_to_throw', type=str, default='player')
     parser.add_argument('-a', '--bot_average', type=float, default=45.0)
-    parser.add_argument('-t', '--bot_time', type=float, default=2.4)
+    parser.add_argument('-t', '--bot_time', type=float, default=0.8)
 
     args=parser.parse_args()
     return args
@@ -245,21 +246,26 @@ def handle_game(game_id: str, bot_average: float, sets_to_win: int = 1, legs_to_
     leg_turn = first_to_throw
     leg_log = []
 
-    def _clear_console():
+    def _clear_console() -> None:
         os.system('cls' if os.name == 'nt' else 'clear')
 
-    def _save_game_log():
-        game_log = {
-            'id': game_id,
-            'player_home': 'PLAYER' if first_to_throw == 'player' else bot_name,
-            'player_away': bot_name if first_to_throw == 'player' else 'PLAYER',
-            'legs_to_win': legs_to_win,
-            'sets_to_win': sets_to_win,
-            'winner': game.get_winner(),
-            'log': leg_log
-        }
+    def _save_game_log(game_log: dict) -> None:
         with open(f'{save_log_location}{game_id}.json', 'wt') as f:
             json.dump(game_log, f)
+
+    def _print_stats(stats: dict) -> None:
+        player_avg = stats['average']['PLAYER']
+        bot_avg = stats['average'][bot_name]
+
+        col_width = 15
+        top_border = "+" + "-" * (col_width + 2) + "+" + "-" * (col_width + 2) + "+"
+        header = "| {:^{}} | {:^{}} |".format("Player", col_width, "Average", col_width)
+        divider = "+" + "-" * (col_width + 2) + "+" + "-" * (col_width + 2) + "+"
+        human_row = "| {:<{}} | {:^{}} |".format("PLAYER", col_width, player_avg, col_width)
+        ai_row = "| {:<{}} | {:^{}} |".format(f"{bot_name}", col_width, bot_avg, col_width)
+
+        for row in [top_border, header, divider, human_row, divider, ai_row, divider]:
+            print(row)
 
     # game loop
     while not game.is_game_over():
@@ -277,9 +283,20 @@ def handle_game(game_id: str, bot_average: float, sets_to_win: int = 1, legs_to_
 
     # game over
     _clear_console()
-    _save_game_log()
     print(leg)
     print(game)
+
+    game_log = {
+            'id': game_id,
+            'player_home': 'PLAYER' if first_to_throw == 'player' else bot_name,
+            'player_away': bot_name if first_to_throw == 'player' else 'PLAYER',
+            'legs_to_win': legs_to_win,
+            'sets_to_win': sets_to_win,
+            'winner': game.get_winner(),
+            'log': leg_log
+        }
+    _save_game_log(game_log)
+    _print_stats(stats.extract_stats(game_log))
 
 
 if __name__ == '__main__':
