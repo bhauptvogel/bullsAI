@@ -23,9 +23,7 @@ def parse_args():
     parser.add_argument('--first_to_throw', type=str, default='player')
     parser.add_argument('-a', '--bot_average', type=float, default=45.0)
     parser.add_argument('-t', '--bot_time', type=float, default=0.8)
-
-    args=parser.parse_args()
-    return args
+    return parser.parse_args()
 
 @dataclass
 class Game:
@@ -189,9 +187,9 @@ class Leg:
             if self.bot_score - bot_points <= 1:
                 if self._is_checkout(self.bot_score, bot_points) and dart.was_double_hit(bot_coordinates):
                     darts_thrown = dart_index + 1
-                    break
                 else:
                     bot_points = 0
+                break
 
         self.bot_score -= bot_points
         self.log.append({
@@ -246,16 +244,13 @@ def handle_game(game_id: str, bot_average: float, sets_to_win: int = 1, legs_to_
     leg_turn = first_to_throw
     leg_log = []
 
-    def _clear_console() -> None:
-        os.system('cls' if os.name == 'nt' else 'clear')
-
     def _save_game_log(game_log: dict) -> None:
         with open(f'{save_log_location}{game_id}.json', 'wt') as f:
             json.dump(game_log, f)
 
-    def _print_stats(stats: dict) -> None:
-        player_avg = stats['average']['PLAYER']
-        bot_avg = stats['average'][bot_name]
+    def _print_averages_table(stats: dict) -> None:
+        player_avg = round(stats['average']['PLAYER'], 2)
+        bot_avg = round(stats['average'][bot_name],2)
 
         col_width = 15
         top_border = "+" + "-" * (col_width + 2) + "+" + "-" * (col_width + 2) + "+"
@@ -273,7 +268,7 @@ def handle_game(game_id: str, bot_average: float, sets_to_win: int = 1, legs_to_
         
         # leg loop
         while not leg.is_leg_over():
-            _clear_console()
+            os.system('cls' if os.name == 'nt' else 'clear')
             print(leg)
             leg.visit()
         
@@ -282,7 +277,7 @@ def handle_game(game_id: str, bot_average: float, sets_to_win: int = 1, legs_to_
         leg_turn = 'player' if leg_turn == 'bot' else 'bot'
 
     # game over
-    _clear_console()
+    os.system('cls' if os.name == 'nt' else 'clear')
     print(leg)
     print(game)
 
@@ -296,13 +291,13 @@ def handle_game(game_id: str, bot_average: float, sets_to_win: int = 1, legs_to_
             'log': leg_log
         }
     _save_game_log(game_log)
-    _print_stats(stats.extract_stats(game_log))
+    _print_averages_table(stats.extract_stats(game_log))
 
 
 if __name__ == '__main__':
     inputs=parse_args()
     handle_game(f'{datetime.now().strftime("%d%m%Y%H%M")}_{inputs.bot_average}', inputs.bot_average, inputs.sets_to_win, inputs.legs_to_win, inputs.first_to_throw, inputs.starting_points, inputs.bot_time)
 
-# OTHER TODOS:
+# OTHER TODOS / IDEAS:
 # - Player can also give his fields instead of a score
 # - Show what fields players has to throw, if he can finish

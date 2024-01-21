@@ -5,11 +5,9 @@ import argparse
 def parse_args():
     parser=argparse.ArgumentParser()
     parser.add_argument('-l', '--file-location', type=str, default='')
+    return parser.parse_args()
 
-    args=parser.parse_args()
-    return args
-
-def extract_stats(game_obj: dict):
+def extract_stats(game_obj: dict) -> dict:
 
     # IDEAS:
     # Stats for each leg / set with darts thrown & average
