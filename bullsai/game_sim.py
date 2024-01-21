@@ -169,6 +169,7 @@ class Leg:
         def _sim_bot_throw(remaining_darts: int) -> float:
             return dart.dart_throw_sim(dart.get_target_coordinates(dart.get_next_target_field(self.bot_score-bot_points, remaining_darts)), self.game_information.bot_std)
 
+        print(f'{self.game_information.bot_name} turn: ', end='')
         for dart_index in range(3):
             bot_coordinates = _sim_bot_throw(3 - dart_index)
             bot_points += dart.get_points_of_coordinates(bot_coordinates)
