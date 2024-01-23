@@ -25,8 +25,8 @@ def leg_sim(std: float) -> float:
     return (501/darts_thrown)*3
 
 def sim_and_plot_diffent_std_values():
-    std_values = np.linspace(5.0, 0.1, 500)
-    std_values = np.arange(0.1, 5.0, 0.01)
+    # std_values = np.linspace(5.0, 0.1, 500)
+    std_values = np.arange(0.1, 4.5, 0.01)
     samples = 100000
 
     print(f"Number of std_values: {len(std_values)}")
