@@ -67,6 +67,23 @@ def get_target_coordinates(field: str) -> np.array:
     return np.array([target_distance_to_origin * np.sin(angle), target_distance_to_origin * np.cos(angle)])
 
 
+TWO_DART_CHECKOUT = {
+    61: 'T11',
+    62: 'T12',
+    63: 'T13',
+    64: 'T14',
+    65: 'T15',
+    66: 'T16',
+    67: 'T17',
+    68: 'T18',
+    69: 'T19',
+    70: 'T20',
+    90: 'T18',
+    101: 'T17',
+    104: 'T18',
+    107: 'T19',
+    110: 'T20'
+}
 def get_next_target_field(remaining_points: int, remaining_darts: int = 3) -> str:
     # TODO: Do the occasional T19 (only if average under 120)
     if remaining_points >= 132:
@@ -77,24 +94,7 @@ def get_next_target_field(remaining_points: int, remaining_darts: int = 3) -> st
         return 'D25'
     # special case if only 2 darts left: if the first does not hit, player can still target D25
     # TODO: Test if this really gives an advantage (at different stds)
-    checkout_table_2_darts = {
-        61: 'T11',
-        62: 'T12',
-        63: 'T13',
-        64: 'T14',
-        65: 'T15',
-        66: 'T16',
-        67: 'T17',
-        68: 'T18',
-        69: 'T19',
-        70: 'T20',
-        90: 'T18',
-        101: 'T17',
-        104: 'T18',
-        107: 'T19',
-        110: 'T20'
-    }
-    if remaining_darts == 2 and remaining_points in checkout_table_2_darts.keys():
-        return checkout_table_2_darts[remaining_points]
+    if remaining_darts == 2 and remaining_points in TWO_DART_CHECKOUT.keys():
+        return TWO_DART_CHECKOUT[remaining_points]
 
     return checkouts.checkouts[str(remaining_points)][0]

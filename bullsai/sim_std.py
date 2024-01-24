@@ -40,6 +40,7 @@ def sim_and_plot_diffent_std_values():
     start = time.time()
 
     LOG_FILE = f'bullsai/dart_sims/sim_{len(std_values)}_{samples}.txt'
+    PLOT_FILE = f'bullsai/dart_sims/plot_{len(std_values)}_{samples}.png'
 
     # reset LOG_FILE
     with open(LOG_FILE, 'wt') as file:
@@ -72,6 +73,7 @@ def sim_and_plot_diffent_std_values():
     plt.xlabel('std_values')
     plt.ylabel('averages')
     plt.grid(True)
+    plt.savefig(PLOT_FILE)
     plt.show()
 
 if __name__ == "__main__":
