@@ -44,7 +44,7 @@ def play(day: int):
     first_to_throw = 'player' if game_to_play['Home Player'].values[0] == 'PLAYER' else 'bot'
 
     game_id = str(uuid.uuid4())
-    result = handle_game(game_id=game_id, bot_average=get_opponent_average(opponent), sets_to_win=1, legs_to_win=5, first_to_throw=first_to_throw, starting_points=51, bot_name=opponent, save_log_location='fantasy/game_logs/')
+    result = handle_game(game_id=game_id, bot_average=get_opponent_average(opponent), sets_to_win=1, legs_to_win=5, first_to_throw=first_to_throw, starting_points=501, bot_name=opponent, save_log_location='fantasy/game_logs/')
     put_result_in_csv(result.player_legs_won, result.bot_legs_won, game_id, first_to_throw, opponent)
 
 if __name__ == '__main__':
