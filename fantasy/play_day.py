@@ -30,6 +30,7 @@ def play(day: int):
 
     game_id = str(uuid.uuid4())
     handle_game(game_id=game_id, bot_average=get_player_average(opponent), sets_to_win=1, legs_to_win=5, first_to_throw=first_to_throw, starting_points=501, bot_name=opponent, save_log_location='fantasy/game_logs/')
+    print(f'Game ID: {game_id}')
 
 if __name__ == '__main__':
     inputs=parse_args()
