@@ -47,9 +47,16 @@ def play(day: int):
     result = handle_game(game_id=game_id, bot_average=get_opponent_average(opponent), sets_to_win=1, legs_to_win=5, first_to_throw=first_to_throw, starting_points=501, bot_name=opponent, save_log_location='fantasy/game_logs/')
     put_result_in_csv(result.player_legs_won, result.bot_legs_won, game_id, first_to_throw, opponent)
 
+def has_player_already_played(day: int) -> bool:
+    league_schedule = pd.read_csv(f'fantasy/schedule_league_{get_league_of_player()}.csv')
+    game_to_play = league_schedule[(league_schedule['Day'] == day) & ((league_schedule['Home Player'] == "PLAYER") | (league_schedule['Away Player'] == "PLAYER"))]
+    return not game_to_play['Result'].isnull().values[0]
+
 if __name__ == '__main__':
     inputs=parse_args()
     if inputs.day == 0:
         raise ValueError('Please specify a day')
+    elif has_player_already_played(inputs.day):
+        print('Player has already played on this day')
     else:
         play(inputs.day)

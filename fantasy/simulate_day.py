@@ -134,10 +134,22 @@ def sim_leg(player_home_name: str, player_away_name: str, player_home_avg: str, 
 
     return {"winner": 1 if player_1_points == 0 else 2, "log": leg_log}
 
+def is_day_already_played(day: int) -> bool:
+    for league in range(4):
+        games = pd.read_csv(f'fantasy/schedule_league_{league+1}.csv')
+        day_games = games[games['Day'] == day]
+        exclude_player = day_games[(day_games['Home Player'] != "PLAYER") & (day_games['Away Player'] != "PLAYER")]
+        not_played = exclude_player[exclude_player['Result'].isna()]
+        if not_played.empty:
+            return True
+    return False
+
 # example: in /dart - python fantasy/simulate_day.py -d 1  
 if __name__ == '__main__':
     inputs=parse_args()
     if inputs.day == 0:
         raise ValueError('Please specify a day')
+    elif is_day_already_played(inputs.day):
+        print(f'Cannot simulate day {inputs.day}, since it is already played!')
     else:
         sim(inputs.day)
