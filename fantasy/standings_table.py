@@ -61,10 +61,26 @@ def print_league_standings(league: int = 4) -> None:
     table[-1] = '\033[33m' + table[-1] + '\033[0m'
     table[-2] = '\033[33m' + table[-2] + '\033[0m'
 
-    print('\n'.join(table))
+    print('\n'.join(table), end='\n\n')
 
+def print_upcoming_games(league: int) -> None:
+    league_schedule = pd.read_csv(f'fantasy/schedule_league_{league}.csv')
+
+    upcoming_games = league_schedule[league_schedule['Result'].isna()]
+    if upcoming_games.empty:
+        print(f'No upcoming games for League {league}')
+        return
+    next_day = upcoming_games['Day'].min()
+    next_day_games = upcoming_games[upcoming_games['Day'] == next_day]
+
+    print(f'Upcoming Games for League {league} (Day {next_day}):')
+    for _, game in next_day_games.iterrows():
+        home_player = game['Home Player']
+        away_player = game['Away Player']
+        print(f'-> {home_player} vs {away_player}')
 
 # example: in /dart - python fantasy/standings_table.py -l 4
 if __name__ == '__main__':
     inputs=parse_args()
     print_league_standings(inputs.league)
+    print_upcoming_games(inputs.league)
