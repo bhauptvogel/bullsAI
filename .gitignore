@@ -160,7 +160,7 @@ cython_debug/
 #.idea/
 
 dart_sims/
-# fantasy/
 .vscode/
 bullsai/game_logs/
 notes.md
+fantasy/backups
