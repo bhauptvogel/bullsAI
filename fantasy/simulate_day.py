@@ -12,7 +12,7 @@ def get_player_average(name: str) -> float:
 def parse_args():
     parser=argparse.ArgumentParser()
     parser.add_argument('-d', '--day', type=int, default=0)
-
+    parser.add_argument('-n', '--next', action='store_true')
     args=parser.parse_args()
     return args
 
@@ -144,12 +144,34 @@ def is_day_already_played(day: int) -> bool:
             return True
     return False
 
+def get_next_game_day() -> int:
+    day = 0
+    for league in range(4):
+        games = pd.read_csv(f'fantasy/schedule_league_{league+1}.csv')
+        exclude_player = games[(games['Home Player'] != "PLAYER") & (games['Away Player'] != "PLAYER")]
+        played_games = exclude_player[exclude_player['Result'].notnull()]
+        max_day = played_games['Day'].max()
+        if max_day > day:
+            day = max_day
+    return day + 1
+
 # example: in /dart - python fantasy/simulate_day.py -d 1  
 if __name__ == '__main__':
     inputs=parse_args()
-    if inputs.day == 0:
-        raise ValueError('Please specify a day')
-    elif is_day_already_played(inputs.day):
-        print(f'Cannot simulate day {inputs.day}, since it is already played!')
+
+    if inputs.next == True:
+        day = get_next_game_day()
     else:
-        sim(inputs.day)
+        day = inputs.day
+
+    # Input 'Do you want to simulate day {day}'
+    user_input = input(f'Do you want to simulate day {day}? (y/n) ')
+    if user_input.lower() in ['y', 'yes']:
+        if day == 0:
+            raise ValueError('Please specify a day')
+        elif is_day_already_played(day):
+            print(f'Cannot simulate day {day}, since it is already played!')
+        else:
+            sim(day)
+    else:
+        print(f'Day {day} not simulated')

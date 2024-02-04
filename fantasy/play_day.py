@@ -6,7 +6,7 @@ from bullsai.game_sim import handle_game, Game
 def parse_args():
     parser=argparse.ArgumentParser()
     parser.add_argument('-d', '--day', type=int, default=0)
-
+    parser.add_argument('-n', '--next', action='store_true')
     args=parser.parse_args()
     return args
 
@@ -52,11 +52,22 @@ def has_player_already_played(day: int) -> bool:
     game_to_play = league_schedule[(league_schedule['Day'] == day) & ((league_schedule['Home Player'] == "PLAYER") | (league_schedule['Away Player'] == "PLAYER"))]
     return not game_to_play['Result'].isnull().values[0]
 
+def get_next_game_day() -> int:
+    league_schedule = pd.read_csv(f'fantasy/schedule_league_{get_league_of_player()}.csv')
+    player_games = league_schedule[(league_schedule['Home Player'] == "PLAYER") | (league_schedule['Away Player'] == "PLAYER")]
+    return player_games[player_games['Result'].isnull()]['Day'].values[0]
+
 if __name__ == '__main__':
     inputs=parse_args()
-    if inputs.day == 0:
+
+    if inputs.next == True:
+        day = get_next_game_day()
+    else:
+        day = inputs.day
+
+    if day <= 0:
         raise ValueError('Please specify a day')
-    elif has_player_already_played(inputs.day):
+    elif has_player_already_played(day):
         print('Player has already played on this day')
     else:
-        play(inputs.day)
+        play(day)
