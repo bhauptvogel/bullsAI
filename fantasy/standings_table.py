@@ -61,6 +61,10 @@ def print_league_standings(league: int = 4) -> None:
     table[-1] = '\033[33m' + table[-1] + '\033[0m'
     table[-2] = '\033[33m' + table[-2] + '\033[0m'
 
+    # color PLAYER
+    for i, row in enumerate(table):
+        table[i] = row.replace('PLAYER', '\033[1mPLAYER\033[0m')
+
     print('\n'.join(table), end='\n\n')
 
 def print_upcoming_games(league: int) -> None:
