@@ -9,26 +9,26 @@ Day,Home Player,Away Player,Result,Game Log
 2,Leo Evans,Lukas Ragedanzk,2-5,5e400518-b16c-46f9-b0a7-33cfe9e7504b
 2,Maximilian Sägemann,Jack Taylor,5-1,8cdf3c9c-256d-4105-b84f-63e86f115b6d
 2,Gabriel Martin,Ethan Taylor,4-5,0142fc08-a296-43c6-9ec0-34dbba5b8d8a
-3,Emily Johnson,Rhys Evans,,
-3,Lucas de Jong,Lukas Ragedanzk,,
-3,Noah Wilson,Jack Taylor,,
-3,Leo Evans,Ethan Taylor,,
-3,Maximilian Sägemann,Gabriel Martin,,
-4,Emily Johnson,Lukas Ragedanzk,,
-4,Rhys Evans,Jack Taylor,,
-4,Lucas de Jong,Ethan Taylor,,
-4,Noah Wilson,Gabriel Martin,,
-4,Leo Evans,Maximilian Sägemann,,
-5,Emily Johnson,Jack Taylor,,
-5,Lukas Ragedanzk,Ethan Taylor,,
-5,Rhys Evans,Gabriel Martin,,
-5,Lucas de Jong,Maximilian Sägemann,,
-5,Noah Wilson,Leo Evans,,
-6,Emily Johnson,Ethan Taylor,,
-6,Jack Taylor,Gabriel Martin,,
-6,Lukas Ragedanzk,Maximilian Sägemann,,
-6,Rhys Evans,Leo Evans,,
-6,Lucas de Jong,Noah Wilson,,
+3,Emily Johnson,Rhys Evans,1-5,a898075e-2e4a-4039-8cd3-3b5fd3a95ab2
+3,Lucas de Jong,Lukas Ragedanzk,5-3,0b8793c4-dc23-4fa9-9de0-7cd3a46a1b0f
+3,Noah Wilson,Jack Taylor,5-3,1cffff24-f61b-422d-ba1b-4dace550530b
+3,Leo Evans,Ethan Taylor,5-0,a89e98f2-160a-4630-b6b6-bfca50e1cb78
+3,Maximilian Sägemann,Gabriel Martin,5-0,34a96063-62a3-4a57-b455-8d74df78e87e
+4,Emily Johnson,Lukas Ragedanzk,1-5,efbd2bf4-cc8c-485e-ae25-51c4b180d809
+4,Rhys Evans,Jack Taylor,5-4,fb0fcfd9-239c-4539-aa98-061be80f0c3d
+4,Lucas de Jong,Ethan Taylor,5-3,aa2d2611-ed01-430e-9e8d-432a62f628c2
+4,Noah Wilson,Gabriel Martin,5-3,6d8c42b7-f5b5-4496-ae52-1e0dda7cf2c0
+4,Leo Evans,Maximilian Sägemann,4-5,1dd978fd-014e-496a-b773-16ce804bc5de
+5,Emily Johnson,Jack Taylor,5-3,5c91a7a5-9f74-4f55-8cb6-86acf32d8475
+5,Lukas Ragedanzk,Ethan Taylor,5-4,70dced28-62b1-4f03-8acf-139af3da193a
+5,Rhys Evans,Gabriel Martin,3-5,83e7ccaf-afd9-4964-91ed-b04df2553232
+5,Lucas de Jong,Maximilian Sägemann,3-5,a94bfc24-c367-4776-8619-4b067d5704ac
+5,Noah Wilson,Leo Evans,5-3,8ab151a5-62e6-4a73-9125-cba8109960b7
+6,Emily Johnson,Ethan Taylor,2-5,2b1ebd23-fe70-470c-9a5c-a4020a0292d1
+6,Jack Taylor,Gabriel Martin,3-5,2c685b25-29f2-42ca-ab66-a918b081a922
+6,Lukas Ragedanzk,Maximilian Sägemann,5-4,1b1519af-8027-4c78-b70d-a57365fa6623
+6,Rhys Evans,Leo Evans,5-2,71b803be-5e34-4f48-82ae-4e92fd89f47a
+6,Lucas de Jong,Noah Wilson,5-3,54ce1174-1565-40cc-bda8-e724fdfcbdbd
 7,Emily Johnson,Gabriel Martin,,
 7,Ethan Taylor,Maximilian Sägemann,,
 7,Jack Taylor,Leo Evans,,
