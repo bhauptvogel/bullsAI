@@ -288,6 +288,8 @@ def handle_game(game_id: str, bot_average: float, sets_to_win: int = 1, legs_to_
     _save_game_log(game_log)
     _print_averages_table(stats.extract_stats(game_log))
 
+    return game
+
 
 if __name__ == '__main__':
     inputs=parse_args()
