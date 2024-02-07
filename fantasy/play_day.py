@@ -61,6 +61,8 @@ if __name__ == '__main__':
     inputs=parse_args()
 
     if inputs.next == True:
+        if inputs.day != 0:
+            raise ValueError('Please specify only one of --day or --next')
         day = get_next_game_day()
     else:
         day = inputs.day
