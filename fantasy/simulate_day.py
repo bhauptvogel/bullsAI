@@ -159,7 +159,7 @@ def get_next_game_day() -> int:
 if __name__ == '__main__':
     inputs=parse_args()
 
-    if inputs.next == True:
+    if inputs.next == True and inputs.day == 0:
         day = get_next_game_day()
     else:
         day = inputs.day
