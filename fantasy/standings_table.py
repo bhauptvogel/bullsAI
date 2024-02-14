@@ -2,13 +2,7 @@ import argparse
 import pandas as pd
 import json
 
-def parse_args():
-    parser=argparse.ArgumentParser()
-    parser.add_argument('-l', '--league', type=int, default=4)
-    return parser.parse_args()
-
-# TODO: If league not given -> show league with player
-def print_league_standings(league: int = 4) -> None:
+def print_league_standings(league: int, stats: bool) -> None:
 
     players = pd.read_csv('fantasy/players.csv')
     
@@ -21,7 +15,15 @@ def print_league_standings(league: int = 4) -> None:
     league_standings['Legs Won'] = 0
     league_standings['Legs Lost'] = 0
     league_standings['Season Average'] = league_standings['Name'].apply(player_season_average)
-    league_standings['Season Average'] = league_standings['Season Average'].round(2)
+    league_standings['Season Average'] = league_standings['Season Average'].round(1)
+    if stats:
+        league_standings['First 9 / 12 / 15 Average'] = league_standings['Name'].apply(lambda x: f'{round(player_first_x_average(x, 9),1)} / {round(player_first_x_average(x, 12),1)} / {round(player_first_x_average(x,15),1)}')
+        league_standings['100+ Visits'] = league_standings['Name'].apply(lambda x: player_above_x_visits(x, 100))
+        league_standings['120+ Visits'] = league_standings['Name'].apply(lambda x: player_above_x_visits(x, 120))
+        league_standings['140+ Visits'] = league_standings['Name'].apply(lambda x: player_above_x_visits(x, 140))
+        league_standings['Highest Visit'] = league_standings['Name'].apply(player_highest_visit)
+        league_standings['Highest Finish'] = league_standings['Name'].apply(player_highest_finish)
+        league_standings['Best Leg'] = league_standings['Name'].apply(player_best_leg)
 
     played_games = league_schedule[league_schedule['Result'].notnull()]
 
@@ -69,20 +71,21 @@ def print_league_standings(league: int = 4) -> None:
 
     print('\n'.join(table), end='\n\n')
 
-def player_season_average(player_name: str):
-    # 1. Check if player is in players.csv
+def get_player_game_logs(player_name: str) -> pd.DataFrame:
+    # Check if player is in players.csv
     player_df = pd.read_csv('fantasy/players.csv')
     player = player_df[player_df['Name'] == player_name]
     if player.empty:
         raise ValueError('Player not found in players.csv')
 
-    # 2. Get all game ids player has played
+    # Get all game ids player has played
     league = player['League'].values[0]
     schedule = pd.read_csv(f'fantasy/schedule_league_{league}.csv')
     player_games = schedule[(schedule['Home Player'] == player_name) | (schedule['Away Player'] == player_name)]
-    game_logs = player_games['Game Log'].dropna().values
+    return player_games['Game Log'].dropna().values
 
-    # 3. Iterate through games to get stats
+def player_season_average(player_name: str) -> float:
+    game_logs = get_player_game_logs(player_name=player_name)
     darts_thrown = 0
     points_scored = 0
     for game in game_logs:
@@ -96,6 +99,78 @@ def player_season_average(player_name: str):
                         points_scored += throw['points_scored']
 
     return points_scored / darts_thrown * 3
+
+def player_first_x_average(player_name: str, x: int) -> float:
+    game_logs = get_player_game_logs(player_name=player_name)
+    darts_thrown = 0
+    points_scored = 0
+    for game in game_logs:
+        with open(f'fantasy/game_logs/{game}.json', 'r') as f:
+            game_obj = json.load(f)
+            leg_log = game_obj['log']
+            for leg in leg_log:
+                leg_darts = 0
+                for throw in leg:
+                    if throw['player'] == player_name and leg_darts < x:
+                        darts_thrown += throw['darts_thrown']
+                        points_scored += throw['points_scored']
+                        leg_darts += throw['darts_thrown']
+    return points_scored / darts_thrown * 3
+
+def player_highest_visit(player_name: str) -> int:
+    game_logs = get_player_game_logs(player_name=player_name)
+    highest_visit = 0
+    for game in game_logs:
+        with open(f'fantasy/game_logs/{game}.json', 'r') as f:
+            game_obj = json.load(f)
+            leg_log = game_obj['log']
+            for leg in leg_log:
+                for throw in leg:
+                    if throw['player'] == player_name and throw['points_scored'] > highest_visit:
+                        highest_visit = throw['points_scored']
+    return highest_visit
+
+def player_above_x_visits(player_name: str, above_x: int) -> int:
+    game_logs = get_player_game_logs(player_name=player_name)
+    visits_above_x = 0
+    for game in game_logs:
+        with open(f'fantasy/game_logs/{game}.json', 'r') as f:
+            game_obj = json.load(f)
+            leg_log = game_obj['log']
+            for leg in leg_log:
+                for throw in leg:
+                    if throw['player'] == player_name and throw['points_scored'] >= above_x:
+                        visits_above_x += 1
+    return visits_above_x
+
+def player_highest_finish(player_name: str) -> int:
+    game_logs = get_player_game_logs(player_name=player_name)
+    highest_finish = 0
+    for game in game_logs:
+        with open(f'fantasy/game_logs/{game}.json', 'r') as f:
+            game_obj = json.load(f)
+            leg_log = game_obj['log']
+            for leg in leg_log:
+                for throw in leg:
+                    if throw['player'] == player_name and throw['points_scored'] > highest_finish and throw['remaining_points'] == 0:
+                        highest_finish = throw['points_scored']
+    return highest_finish
+
+def player_best_leg(player_name: str) -> str:
+    game_logs = get_player_game_logs(player_name=player_name)
+    best_leg = 0
+    for game in game_logs:
+        with open(f'fantasy/game_logs/{game}.json', 'r') as f:
+            game_obj = json.load(f)
+            leg_log = game_obj['log']
+            for leg in leg_log:
+                leg_darts = 0
+                for throw in leg:
+                    if throw['player'] == player_name:
+                        leg_darts += throw['darts_thrown']
+                if best_leg == 0 or leg_darts < best_leg:
+                    best_leg = leg_darts
+    return f'{best_leg} D'
 
 def print_upcoming_games(league: int) -> None:
     league_schedule = pd.read_csv(f'fantasy/schedule_league_{league}.csv')
@@ -113,8 +188,17 @@ def print_upcoming_games(league: int) -> None:
         away_player = game['Away Player']
         print(f'-> {home_player} vs {away_player}')
 
+def get_league_of_player() -> int:
+    players = pd.read_csv('fantasy/players.csv')
+    return int(players[players['Name'] == 'PLAYER']['League'].values[0])
+
 # example: in /dart - python fantasy/standings_table.py -l 4
 if __name__ == '__main__':
-    inputs=parse_args()
-    print_league_standings(inputs.league)
+    parser=argparse.ArgumentParser()
+    parser.add_argument('-l', '--league', type=int, default=get_league_of_player())
+    parser.add_argument('-s', '--stats', action='store_true')
+    inputs = parser.parse_args()
+    if inputs.league < 1 or inputs.league > 4:
+        raise ValueError('Invalid league number')
+    print_league_standings(inputs.league, inputs.stats)
     print_upcoming_games(inputs.league)
