@@ -1,5 +1,6 @@
 import argparse
 import pandas as pd
+import json
 
 def parse_args():
     parser=argparse.ArgumentParser()
@@ -19,7 +20,8 @@ def print_league_standings(league: int = 4) -> None:
     league_standings['L'] = 0
     league_standings['Legs Won'] = 0
     league_standings['Legs Lost'] = 0
-    # league_standings['Season Average'] = None
+    league_standings['Season Average'] = league_standings['Name'].apply(player_season_average)
+    league_standings['Season Average'] = league_standings['Season Average'].round(2)
 
     played_games = league_schedule[league_schedule['Result'].notnull()]
 
@@ -40,7 +42,7 @@ def print_league_standings(league: int = 4) -> None:
 
 
     # sort by W, then by Legs Won, then by Legs Lost ascending
-    league_standings = league_standings.sort_values(by=['W', 'Legs Won', 'Legs Lost'], ascending=[False, False, True])
+    league_standings = league_standings.sort_values(by=['W', 'Legs Won', 'Legs Lost', 'Season Average'], ascending=[False, False, True, False])
 
     league_standings['#'] = range(1, len(league_standings)+1)
     league_standings = league_standings[['#'] + league_standings.columns[:-1].tolist()]
@@ -66,6 +68,34 @@ def print_league_standings(league: int = 4) -> None:
         table[i] = row.replace('PLAYER', '\033[1mPLAYER\033[0m')
 
     print('\n'.join(table), end='\n\n')
+
+def player_season_average(player_name: str):
+    # 1. Check if player is in players.csv
+    player_df = pd.read_csv('fantasy/players.csv')
+    player = player_df[player_df['Name'] == player_name]
+    if player.empty:
+        raise ValueError('Player not found in players.csv')
+
+    # 2. Get all game ids player has played
+    league = player['League'].values[0]
+    schedule = pd.read_csv(f'fantasy/schedule_league_{league}.csv')
+    player_games = schedule[(schedule['Home Player'] == player_name) | (schedule['Away Player'] == player_name)]
+    game_logs = player_games['Game Log'].dropna().values
+
+    # 3. Iterate through games to get stats
+    darts_thrown = 0
+    points_scored = 0
+    for game in game_logs:
+        with open(f'fantasy/game_logs/{game}.json', 'r') as f:
+            game_obj = json.load(f)
+            leg_log = game_obj['log']
+            for leg in leg_log:
+                for throw in leg:
+                    if throw['player'] == player_name:
+                        darts_thrown += throw['darts_thrown']
+                        points_scored += throw['points_scored']
+
+    return points_scored / darts_thrown * 3
 
 def print_upcoming_games(league: int) -> None:
     league_schedule = pd.read_csv(f'fantasy/schedule_league_{league}.csv')
