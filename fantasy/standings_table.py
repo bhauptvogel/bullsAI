@@ -67,8 +67,7 @@ def print_league_standings(league: int, stats: bool) -> None:
 
     # color PLAYER
     for i, row in enumerate(table):
-        table[i] = row.replace('PLAYER', '\033[1mPLAYER')
-        
+        table[i] = row.replace('PLAYER', '\033[1mPLAYER\033[22m')
 
     print('\n'.join(table), end='\n\n')
 
