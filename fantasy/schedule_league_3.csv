@@ -59,33 +59,33 @@ Day,Home Player,Away Player,Result,Game Log
 12,Sophia Filster,Liam Stewart,5-1,98390dd0-4b71-4e6a-8b88-5b35229d56d2
 12,Levi van Dijk,George Williams,5-2,fe5e39cb-21ab-4bd4-a101-ee474b6b1ba7
 12,Jonas Meinhard,Noah Davies,5-1,42fc44f0-74e2-452e-af70-cfd6fc4bcc7b
-13,Aiden MacDonald,Sean O'Brien,,
-13,Sophia Filster,Matilde Santos,,
-13,Levi van Dijk,Jakub Nowakicz,,
-13,Jonas Meinhard,Liam Stewart,,
-13,Noah Davies,George Williams,,
-14,Sophia Filster,Sean O'Brien,,
-14,Levi van Dijk,Aiden MacDonald,,
-14,Jonas Meinhard,Matilde Santos,,
-14,Noah Davies,Jakub Nowakicz,,
-14,George Williams,Liam Stewart,,
-15,Levi van Dijk,Sean O'Brien,,
-15,Jonas Meinhard,Sophia Filster,,
-15,Noah Davies,Aiden MacDonald,,
-15,George Williams,Matilde Santos,,
-15,Liam Stewart,Jakub Nowakicz,,
-16,Jonas Meinhard,Sean O'Brien,,
-16,Noah Davies,Levi van Dijk,,
-16,George Williams,Sophia Filster,,
-16,Liam Stewart,Aiden MacDonald,,
-16,Jakub Nowakicz,Matilde Santos,,
-17,Noah Davies,Sean O'Brien,,
-17,George Williams,Jonas Meinhard,,
-17,Liam Stewart,Levi van Dijk,,
-17,Jakub Nowakicz,Sophia Filster,,
-17,Matilde Santos,Aiden MacDonald,,
-18,George Williams,Sean O'Brien,,
-18,Liam Stewart,Noah Davies,,
-18,Jakub Nowakicz,Jonas Meinhard,,
-18,Matilde Santos,Levi van Dijk,,
-18,Aiden MacDonald,Sophia Filster,,
+13,Aiden MacDonald,Sean O'Brien,4-5,6adda0de-369f-469d-ac8c-0a6c4afa4fdd
+13,Sophia Filster,Matilde Santos,5-4,18f08f66-a30b-4c4a-9580-0504dd0db2f6
+13,Levi van Dijk,Jakub Nowakicz,5-4,da383469-ef25-4128-a5a9-f02cf1add6a2
+13,Jonas Meinhard,Liam Stewart,5-3,d39c09d9-6404-4591-9fdf-36165cefbf73
+13,Noah Davies,George Williams,2-5,5aac41e9-e805-49c0-9fad-af67326c913c
+14,Sophia Filster,Sean O'Brien,2-5,cae6ad16-390f-4f00-9574-9b5433743c96
+14,Levi van Dijk,Aiden MacDonald,3-5,6b756467-3a4d-4e4c-b47c-6fb240cf6147
+14,Jonas Meinhard,Matilde Santos,5-2,dcd5f823-f936-4f9a-b862-422b1bacc7f6
+14,Noah Davies,Jakub Nowakicz,3-5,d484ede0-2fac-4300-a851-eb35f3d61225
+14,George Williams,Liam Stewart,3-5,392143ff-d406-429c-a20d-2416d2b94901
+15,Levi van Dijk,Sean O'Brien,1-5,dc4d0783-0d9a-4d21-b5e8-bd2888b2a889
+15,Jonas Meinhard,Sophia Filster,3-5,8387b05b-7849-4bbd-b5bb-dcdd57f6d303
+15,Noah Davies,Aiden MacDonald,5-1,98e9d7a3-f83c-4855-895b-b0c039bdd25b
+15,George Williams,Matilde Santos,4-5,f8ca0d04-9ce6-45fe-825c-72939dfe45fa
+15,Liam Stewart,Jakub Nowakicz,5-3,23783c3b-868e-44b8-9f78-fc6a6767b676
+16,Jonas Meinhard,Sean O'Brien,4-5,4f742632-645f-42db-bfc8-98471f17dfc7
+16,Noah Davies,Levi van Dijk,5-2,7cc1bd48-104a-4c91-964d-783117b91dc0
+16,George Williams,Sophia Filster,4-5,69ab67ab-03f2-4098-b582-971a9014d790
+16,Liam Stewart,Aiden MacDonald,5-2,4f4d583e-9e70-42e2-801f-c37c5df1dbdb
+16,Jakub Nowakicz,Matilde Santos,5-1,1f4d5ce5-a45c-412b-9df6-a4823d747974
+17,Noah Davies,Sean O'Brien,5-3,73a60f9d-a35a-4ff0-b1e3-c553c8fe8365
+17,George Williams,Jonas Meinhard,5-3,f3e3cdb2-7e99-45c7-96a2-469ef3061cbf
+17,Liam Stewart,Levi van Dijk,5-3,61ce6482-f4ed-4e51-ba19-8fa88430be89
+17,Jakub Nowakicz,Sophia Filster,1-5,d917f7c0-c7dc-4d72-9cc5-2218596e8910
+17,Matilde Santos,Aiden MacDonald,5-2,dda2b1d2-9b41-4898-aad7-f2f51f306832
+18,George Williams,Sean O'Brien,5-0,e9856fae-fab4-4dec-bfc1-f1f80a4d428f
+18,Liam Stewart,Noah Davies,5-4,ed6183dc-c8e3-4943-8d20-b02799fa9171
+18,Jakub Nowakicz,Jonas Meinhard,0-5,8c30a7ad-dd00-4e46-b8ed-5caa02ce8514
+18,Matilde Santos,Levi van Dijk,2-5,a6525439-310b-4c92-aaa8-ededd9e4aeb8
+18,Aiden MacDonald,Sophia Filster,4-5,02636a77-862d-425a-a97e-3650b95d2b87
