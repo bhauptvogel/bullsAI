@@ -2,11 +2,10 @@ import argparse
 import pandas as pd
 import json
 
-def print_league_standings(league: int, stats: bool) -> None:
+def get_standings_table_as_dataframe(league: int, stats: bool, file_location_players: str = 'fantasy/players.csv', folder_location_schedule: str = 'fantasy') -> pd.DataFrame:
+    players = pd.read_csv(file_location_players)
 
-    players = pd.read_csv('fantasy/players.csv')
-    
-    league_schedule = pd.read_csv(f'fantasy/schedule_league_{league}.csv')
+    league_schedule = pd.read_csv(f'{folder_location_schedule}/schedule_league_{league}.csv')
 
     league_standings = players[players['League'] == league]
     league_standings = league_standings.drop(columns=['League', 'AVG', 'Sex'])
@@ -14,7 +13,7 @@ def print_league_standings(league: int, stats: bool) -> None:
     league_standings['L'] = 0
     league_standings['Legs Won'] = 0
     league_standings['Legs Lost'] = 0
-    league_standings['Season Average'] = league_standings['Name'].apply(player_season_average)
+    league_standings['Season Average'] = league_standings['Name'].apply(lambda x: player_season_average(x, file_location_players=file_location_players, folder_location_schedule=folder_location_schedule))
     league_standings['Season Average'] = league_standings['Season Average'].round(1)
     if stats:
         league_standings['First 9 / 12 / 15 Average'] = league_standings['Name'].apply(lambda x: f'{round(player_first_x_average(x, 9),1)} / {round(player_first_x_average(x, 12),1)} / {round(player_first_x_average(x,15),1)}')
@@ -41,13 +40,19 @@ def print_league_standings(league: int, stats: bool) -> None:
         league_standings.loc[league_standings['Name'] == game[1]['Away Player'], 'L'] += 1 if legs_won_away_player < legs_won_home_player else 0
         league_standings.loc[league_standings['Name'] == game[1]['Away Player'], 'Legs Won'] += legs_won_away_player
         league_standings.loc[league_standings['Name'] == game[1]['Away Player'], 'Legs Lost'] += legs_won_home_player
-
-
+    
     # sort by W, then by Legs Won, then by Legs Lost ascending
     league_standings = league_standings.sort_values(by=['W', 'Legs Won', 'Legs Lost', 'Season Average'], ascending=[False, False, True, False])
 
     league_standings['#'] = range(1, len(league_standings)+1)
     league_standings = league_standings[['#'] + league_standings.columns[:-1].tolist()]
+
+    return league_standings
+
+
+def print_league_standings(league: int, stats: bool) -> None:
+
+    league_standings = get_standings_table_as_dataframe(league=league, stats=stats)
 
     print(f'League {league} Standings:')
     table = league_standings.to_string(index=False)
@@ -71,21 +76,21 @@ def print_league_standings(league: int, stats: bool) -> None:
 
     print('\n'.join(table), end='\n\n')
 
-def get_player_game_logs(player_name: str) -> pd.DataFrame:
+def get_player_game_logs(player_name: str, file_location_players: str = 'fantasy/players.csv', folder_location_schedule: str = 'fantasy') -> pd.DataFrame:
     # Check if player is in players.csv
-    player_df = pd.read_csv('fantasy/players.csv')
+    player_df = pd.read_csv(file_location_players)
     player = player_df[player_df['Name'] == player_name]
     if player.empty:
         raise ValueError('Player not found in players.csv')
 
     # Get all game ids player has played
-    league = player['League'].values[0]
-    schedule = pd.read_csv(f'fantasy/schedule_league_{league}.csv')
+    league = int(player['League'].values[0])
+    schedule = pd.read_csv(f'{folder_location_schedule}/schedule_league_{league}.csv')
     player_games = schedule[(schedule['Home Player'] == player_name) | (schedule['Away Player'] == player_name)]
     return player_games['Game Log'].dropna().values
 
-def player_season_average(player_name: str) -> float:
-    game_logs = get_player_game_logs(player_name=player_name)
+def player_season_average(player_name: str, file_location_players: str = 'fantasy/players.csv', folder_location_schedule: str = 'fantasy') -> float:
+    game_logs = get_player_game_logs(player_name=player_name, file_location_players=file_location_players, folder_location_schedule=folder_location_schedule)
     darts_thrown = 0
     points_scored = 0
     for game in game_logs:
@@ -98,7 +103,7 @@ def player_season_average(player_name: str) -> float:
                         darts_thrown += throw['darts_thrown']
                         points_scored += throw['points_scored']
 
-    return points_scored / darts_thrown * 3
+    return points_scored / darts_thrown * 3 if darts_thrown > 0 else 0
 
 def player_first_x_average(player_name: str, x: int) -> float:
     game_logs = get_player_game_logs(player_name=player_name)
@@ -115,7 +120,7 @@ def player_first_x_average(player_name: str, x: int) -> float:
                         darts_thrown += throw['darts_thrown']
                         points_scored += throw['points_scored']
                         leg_darts += throw['darts_thrown']
-    return points_scored / darts_thrown * 3
+    return points_scored / darts_thrown * 3 if darts_thrown > 0 else 0
 
 def player_highest_visit(player_name: str) -> int:
     game_logs = get_player_game_logs(player_name=player_name)
