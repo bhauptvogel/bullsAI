@@ -1,91 +1,91 @@
 Day,Home Player,Away Player,Result,Game Log
-1,Adam Novák,Maximilian Sägemann,5-4,5762fc4f-fccc-4cbd-a20f-b7ec42b8d0da
-1,Hugo Fernández,Lucas de Jong,5-0,f4712071-e025-4b5e-9c84-20c0138b828c
-1,Sofia Martinez,Ryan Fraser,5-4,883ea9f2-a7d8-41ab-b8ab-51bc097b949b
-1,Lukas Kazlauskas,Louis Dubois,5-2,c23f3b92-baae-4d59-8c6e-041aa6c72528
-1,Charlie Wilson,Gareth Williams,5-2,9972e75a-4737-45e9-964a-07340d316cf3
-2,Adam Novák,Lucas de Jong,4-5,b234c99f-c930-4497-a709-626ac42c608c
-2,Maximilian Sägemann,Ryan Fraser,5-3,c06da326-466c-4d87-a6e7-f8279f46b9af
-2,Hugo Fernández,Louis Dubois,5-2,03ecf845-28fa-432e-a179-17bd3e8cbfa8
-2,Sofia Martinez,Gareth Williams,5-3,8130655a-dc6e-4640-bb2a-cd000df1954c
-2,Lukas Kazlauskas,Charlie Wilson,3-5,21470198-46e7-46d7-a7fb-9244cd357744
-3,Sofia Martinez,Lukas Kazlauskas,5-3,669e501f-0c63-470d-94e7-76f1422296bd
-3,Hugo Fernández,Charlie Wilson,3-5,b0b2abe5-c456-4218-9722-08842a1fdc9f
-3,Adam Novák,Ryan Fraser,5-0,91e145fb-ddb0-4041-a8cf-eb3c20d02bfb
-3,Lucas de Jong,Louis Dubois,4-5,1f61101a-2c84-4c25-8ecd-acc38640cd7b
-3,Maximilian Sägemann,Gareth Williams,5-4,f949f315-8e46-41dd-90b6-7b3c3aa3dee8
-4,Adam Novák,Louis Dubois,5-4,69fdcadf-de90-4990-9fb4-da4cd23ad20b
-4,Ryan Fraser,Gareth Williams,1-5,91442745-0a82-4a05-bac8-d926464ed79a
-4,Lucas de Jong,Charlie Wilson,1-5,29a501d5-b1b2-429f-924c-22a4d40c3e55
-4,Maximilian Sägemann,Lukas Kazlauskas,3-5,bfca15ce-33fc-4f60-b70d-fe686588a139
-4,Hugo Fernández,Sofia Martinez,2-5,52c0882f-57d5-40d6-936b-3b14e0f26fba
-5,Maximilian Sägemann,Hugo Fernández,5-1,66adeb80-a2ee-4327-87aa-341feacc55fc
-5,Lucas de Jong,Sofia Martinez,5-4,90c9e47e-0c9d-4f88-80e6-9076b33ef4b1
-5,Adam Novák,Gareth Williams,4-5,6a1d81f5-762f-416a-991a-0cfeeca6b252
-5,Louis Dubois,Charlie Wilson,0-5,483a3679-b9eb-44e8-9bf9-b526e539eb8e
-5,Ryan Fraser,Lukas Kazlauskas,3-5,6cfbe2cd-2c61-4cdc-98b1-576fee7b3617
-6,Adam Novák,Charlie Wilson,5-3,2d25cf7f-b9e2-4c15-bd95-c6c203168c00
-6,Gareth Williams,Lukas Kazlauskas,0-5,607b8f2a-b2ca-4460-aaf6-2822ba165c90
-6,Louis Dubois,Sofia Martinez,5-4,275e8aed-46ee-4f53-b95f-c63043beef04
-6,Ryan Fraser,Hugo Fernández,2-5,1cdcf2d6-9fed-4dc7-a47f-d7fb2ad247c8
-6,Lucas de Jong,Maximilian Sägemann,0-5,4b09b7ec-aed3-48d9-a0bd-384d673c760a
-7,Ryan Fraser,Lucas de Jong,3-5,1952e7eb-27b3-4661-a3ab-e04e3e930073
-7,Louis Dubois,Maximilian Sägemann,4-5,7ae76fdf-2dec-4dfc-994a-2c0d8c3a8b4d
-7,Gareth Williams,Hugo Fernández,3-5,3827747c-6bce-4f93-b389-77fdb35ebe9a
-7,Adam Novák,Lukas Kazlauskas,3-5,efd00584-99a1-4918-9080-ebd211145a9e
-7,Charlie Wilson,Sofia Martinez,5-4,b29dfe7c-60a6-430d-89e4-0f5c07385ab4
-8,Adam Novák,Sofia Martinez,4-5,b04ad065-3b0d-41e2-af9e-61a7289e05aa
-8,Lukas Kazlauskas,Hugo Fernández,5-1,7fa01462-801e-4e5a-b93d-fbfa3b272db9
-8,Charlie Wilson,Maximilian Sägemann,5-2,bae3b876-4e79-452b-ad14-3be6e8f8a603
-8,Gareth Williams,Lucas de Jong,3-5,be793dce-5a2f-4ac4-9137-3717f8d0bebd
-8,Louis Dubois,Ryan Fraser,4-5,59137e7e-5691-48d1-8949-f5a25a451c6c
-9,Charlie Wilson,Ryan Fraser,5-3,bb263b78-414d-43f1-9d32-792d61c685d1
-9,Lukas Kazlauskas,Lucas de Jong,5-2,16e88e96-3ce0-46eb-8842-2cc60ff9a253
-9,Gareth Williams,Louis Dubois,1-5,7566394a-0cb2-4699-b27e-165207e76719
-9,Adam Novák,Hugo Fernández,5-3,3a17b6a2-21b5-44b4-bb10-35ff3bd19e7d
-9,Sofia Martinez,Maximilian Sägemann,5-0,2910aeb3-dca7-47be-bc7c-a52ddf35a366
-10,Hugo Fernández,Maximilian Sägemann,5-1,47e26409-be6b-4e95-8edd-e06766f1ae70
-10,Sofia Martinez,Lucas de Jong,5-4,f7d248af-49fd-493d-8676-ae61abcb1fcc
-10,Lukas Kazlauskas,Ryan Fraser,5-2,8540c2aa-fb13-4dc8-ab92-9fdeb621b854
-10,Gareth Williams,Adam Novák,1-5,7f68f055-114f-4380-8788-e87eacfa1d32
-10,Charlie Wilson,Louis Dubois,5-1,7fe4f651-20d2-461b-a3e4-01e25c975876
-11,Charlie Wilson,Adam Novák,3-5,0e8d99dd-eacb-4ed2-8a6c-743da1ff0462
-11,Sofia Martinez,Louis Dubois,5-3,c90732c4-7997-4120-9ed0-0b9d14ebc76f
-11,Hugo Fernández,Ryan Fraser,5-2,294d7dbb-0802-48b0-97dc-56a098142d2f
-11,Maximilian Sägemann,Lucas de Jong,2-5,98f956d5-8ae8-4975-ad3c-8f5b69ac76c6
-11,Lukas Kazlauskas,Gareth Williams,5-1,b8cca3ee-1aa8-4297-9072-c02470907da9
-12,Lukas Kazlauskas,Adam Novák,5-4,7431582b-9969-4107-beed-5b898b42a6ed
-12,Sofia Martinez,Charlie Wilson,1-5,2fffb49d-facf-4598-bf47-89d43c605ba3
-12,Hugo Fernández,Gareth Williams,2-5,e83e763c-165d-4ecd-880a-93075e537165
-12,Maximilian Sägemann,Louis Dubois,5-0,f1bd39f8-715f-444b-98b2-bace028001fa
-12,Lucas de Jong,Ryan Fraser,4-5,d9a37c22-2f38-4260-bce6-e6802e7e5672
-13,Lucas de Jong,Adam Novák,0-5,7971209d-080e-4756-99e6-37776860722c
-13,Charlie Wilson,Lukas Kazlauskas,2-5,d07425d5-b32c-4c57-99bc-378ef8ef6b5c
-13,Gareth Williams,Sofia Martinez,5-3,47e871d8-c95d-4473-b74c-80436d9757c7
-13,Louis Dubois,Hugo Fernández,3-5,c0c09836-a94f-4f6a-8881-71ec9778196a
-13,Ryan Fraser,Maximilian Sägemann,5-1,a2d8ecbf-e501-4c6d-9baf-7b99bd499367
-14,Gareth Williams,Maximilian Sägemann,5-2,bb3adb57-b6eb-4f7a-8e5f-8bdb225e46d0
-14,Louis Dubois,Lucas de Jong,2-5,932715bd-e0e0-4ca9-9971-5723d425228a
-14,Ryan Fraser,Adam Novák,2-5,3e4100ba-6d34-46e3-bef7-ac8fc0ea9ed3
-14,Charlie Wilson,Hugo Fernández,5-2,cc2f740b-9ab6-416b-8dde-6bc2f15b05a7
-14,Lukas Kazlauskas,Sofia Martinez,5-0,c5238287-2342-4bd2-bb28-c6a983875367
-15,Ryan Fraser,Sofia Martinez,2-5,7b0e4fb9-6678-493a-a87a-bdd9560fbdc1
-15,Maximilian Sägemann,Adam Novák,1-5,d2f304c3-d35e-4166-b8ed-a1b66bf86d5a
-15,Lucas de Jong,Hugo Fernández,5-4,46819937-53fc-4705-9b31-80de94a47a23
-15,Louis Dubois,Lukas Kazlauskas,5-4,943b035a-bdea-41dd-9236-1a4460090840
-15,Gareth Williams,Charlie Wilson,4-5,342f3bfb-bbe0-48aa-b373-14d03e8d38ff
-16,Hugo Fernández,Lukas Kazlauskas,1-5,e116168f-732b-42fd-bedb-6bc74ecf16e0
-16,Lucas de Jong,Gareth Williams,2-5,bc99c4d0-8e5f-418b-98c9-c6bfa4044258
-16,Ryan Fraser,Louis Dubois,5-2,2fe55238-d660-44c7-94bf-c3880b7ac568
-16,Sofia Martinez,Adam Novák,5-4,0ae3ce90-61e2-4864-8035-3fb1172d6a16
-16,Maximilian Sägemann,Charlie Wilson,3-5,8a818f15-7fde-4cbb-a791-92278d4692bb
-17,Hugo Fernández,Adam Novák,2-5,f13a1402-26ed-4318-ae3d-b1737a221c86
-17,Maximilian Sägemann,Sofia Martinez,3-5,fbea88bf-53a9-465d-8762-cff518e732cf
-17,Lucas de Jong,Lukas Kazlauskas,3-5,b16f43ae-f6bd-4973-b77b-7aa67a6cf784
-17,Ryan Fraser,Charlie Wilson,3-5,9d253c06-d43a-446d-8d1c-a96110ff67af
-17,Louis Dubois,Gareth Williams,5-2,461bef54-11db-4bb0-bbfb-99b86888f762
-18,Lukas Kazlauskas,Maximilian Sägemann,3-5,e11e5252-739d-40a2-be21-f926a99b930c
-18,Charlie Wilson,Lucas de Jong,3-5,553c3bb6-f91d-4875-a256-13e2b393ba95
-18,Gareth Williams,Ryan Fraser,5-4,b8d32c12-b463-4adb-972f-f39979ecaa48
-18,Louis Dubois,Adam Novák,1-5,1abb5961-d792-471a-a276-26a64c8fdcaa
-18,Sofia Martinez,Hugo Fernández,5-4,5cd1b17d-d708-4b2f-9da5-77d401190622
+1,Adam Novák,Lukas Ragedanzk,,
+1,Hugo Fernández,Harry Jones,,
+1,Charlie Wilson,Maximilian Sägemann,,
+1,Lukas Kazlauskas,Lucas de Jong,,
+1,Sofia Martinez,Gareth Williams,,
+2,Adam Novák,Harry Jones,,
+2,Lukas Ragedanzk,Maximilian Sägemann,,
+2,Hugo Fernández,Lucas de Jong,,
+2,Charlie Wilson,Gareth Williams,,
+2,Lukas Kazlauskas,Sofia Martinez,,
+3,Charlie Wilson,Lukas Kazlauskas,,
+3,Hugo Fernández,Sofia Martinez,,
+3,Adam Novák,Maximilian Sägemann,,
+3,Harry Jones,Lucas de Jong,,
+3,Lukas Ragedanzk,Gareth Williams,,
+4,Adam Novák,Lucas de Jong,,
+4,Maximilian Sägemann,Gareth Williams,,
+4,Harry Jones,Sofia Martinez,,
+4,Lukas Ragedanzk,Lukas Kazlauskas,,
+4,Hugo Fernández,Charlie Wilson,,
+5,Lukas Ragedanzk,Hugo Fernández,,
+5,Harry Jones,Charlie Wilson,,
+5,Adam Novák,Gareth Williams,,
+5,Lucas de Jong,Sofia Martinez,,
+5,Maximilian Sägemann,Lukas Kazlauskas,,
+6,Adam Novák,Sofia Martinez,,
+6,Gareth Williams,Lukas Kazlauskas,,
+6,Lucas de Jong,Charlie Wilson,,
+6,Maximilian Sägemann,Hugo Fernández,,
+6,Harry Jones,Lukas Ragedanzk,,
+7,Maximilian Sägemann,Harry Jones,,
+7,Lucas de Jong,Lukas Ragedanzk,,
+7,Gareth Williams,Hugo Fernández,,
+7,Adam Novák,Lukas Kazlauskas,,
+7,Sofia Martinez,Charlie Wilson,,
+8,Adam Novák,Charlie Wilson,,
+8,Lukas Kazlauskas,Hugo Fernández,,
+8,Sofia Martinez,Lukas Ragedanzk,,
+8,Gareth Williams,Harry Jones,,
+8,Lucas de Jong,Maximilian Sägemann,,
+9,Sofia Martinez,Maximilian Sägemann,,
+9,Lukas Kazlauskas,Harry Jones,,
+9,Gareth Williams,Lucas de Jong,,
+9,Adam Novák,Hugo Fernández,,
+9,Charlie Wilson,Lukas Ragedanzk,,
+10,Lukas Ragedanzk,Adam Novák,,
+10,Harry Jones,Hugo Fernández,,
+10,Maximilian Sägemann,Charlie Wilson,,
+10,Lucas de Jong,Lukas Kazlauskas,,
+10,Gareth Williams,Sofia Martinez,,
+11,Lukas Kazlauskas,Charlie Wilson,,
+11,Sofia Martinez,Hugo Fernández,,
+11,Maximilian Sägemann,Adam Novák,,
+11,Lucas de Jong,Harry Jones,,
+11,Gareth Williams,Lukas Ragedanzk,,
+12,Harry Jones,Lukas Kazlauskas,,
+12,Lukas Ragedanzk,Charlie Wilson,,
+12,Hugo Fernández,Adam Novák,,
+12,Lucas de Jong,Gareth Williams,,
+12,Maximilian Sägemann,Sofia Martinez,,
+13,Sofia Martinez,Lucas de Jong,,
+13,Gareth Williams,Adam Novák,,
+13,Hugo Fernández,Lukas Ragedanzk,,
+13,Lukas Kazlauskas,Maximilian Sägemann,,
+13,Charlie Wilson,Harry Jones,,
+14,Hugo Fernández,Maximilian Sägemann,,
+14,Charlie Wilson,Lucas de Jong,,
+14,Lukas Kazlauskas,Gareth Williams,,
+14,Sofia Martinez,Adam Novák,,
+14,Lukas Ragedanzk,Harry Jones,,
+15,Gareth Williams,Charlie Wilson,,
+15,Harry Jones,Adam Novák,,
+15,Maximilian Sägemann,Lukas Ragedanzk,,
+15,Sofia Martinez,Lukas Kazlauskas,,
+15,Lucas de Jong,Hugo Fernández,,
+16,Lucas de Jong,Adam Novák,,
+16,Charlie Wilson,Hugo Fernández,,
+16,Gareth Williams,Maximilian Sägemann,,
+16,Sofia Martinez,Harry Jones,,
+16,Lukas Kazlauskas,Lukas Ragedanzk,,
+17,Hugo Fernández,Gareth Williams,,
+17,Lukas Ragedanzk,Lucas de Jong,,
+17,Lukas Kazlauskas,Adam Novák,,
+17,Charlie Wilson,Sofia Martinez,,
+17,Harry Jones,Maximilian Sägemann,,
+18,Charlie Wilson,Adam Novák,,
+18,Hugo Fernández,Lukas Kazlauskas,,
+18,Lukas Ragedanzk,Sofia Martinez,,
+18,Harry Jones,Gareth Williams,,
+18,Maximilian Sägemann,Lucas de Jong,,

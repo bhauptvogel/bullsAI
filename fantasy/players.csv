@@ -1,43 +1,45 @@
 Name,Sex,Country,AVG,League
-Adam Novák,Male,Czech Republic,47.2,1
-Hugo Fernández,Male,Spain,45.14,1
-Sofia Martinez,Female,Argentina,44.87,1
-Lukas Kazlauskas,Male,Lithuania,44.83,1
-Charlie Wilson,Male,England,44.79,1
-Gareth Williams,Male,Wales,42.91,1
-Louis Dubois,Male,France,42.77,1
-Ryan Fraser,Male,Scotland,39.41,1
-Lucas de Jong,Male,Netherlands,41.43,1
-Maximilian Sägemann,Male,Germany,40.79,1
-Harry Jones,Male,England,45.37,2
-Owen Jones,Male,Wales,40.26,2
-Ethan Taylor,Male,Australia,39.52,2
-Lukas Ragedanzk,Male,Germany,38.82,2
-Noah Wilson,Male,New Zealand,37.94,2
-Gabriel Martin,Male,France,36.9,2
-Emily Johnson,Female,England,36.42,2
-Leo Evans,Male,England,35.58,2
-George Williams,Male,England,35.85,2
-Sophia Filster,Female,Germany,35.7,2
-Rhys Evans,Male,Wales,35.97,3
-Jack Taylor,Male,England,35.44,3
-Jonas Meinhard,Male,Germany,35.41,3
-Sean O'Brien,Male,Ireland,33.77,3
-Levi van Dijk,Male,Netherlands,33.73,3
-Liam Stewart,Male,Scotland,33.21,3
-Noah Davies,Male,England,32.18,3
-Matilde Santos,Female,Portugal,30.76,3
-Oliver Smith,Male,England,31.22,3
-PLAYER,,,,3
-Jakub Nowakicz,Male,Poland,32.8,4
-Aiden MacDonald,Male,Scotland,32.11,4
-Amelia Brown,Female,England,32.08,4
-Lucas Peeters,Male,Belgium,31.02,4
-Conor Murphy,Male,Ireland,30.87,4
-Dylan Thomas,Male,Wales,29.27,4
-Gabriel Silva,Male,Brazil,27.93,4
-Finn van der Kerg,Male,Netherlands,26.82,4
-Owen Carter,Male,England,29.1,4
-Dennis Jones,Male,USA,24.43,4
-Mateo Garcia,Male,Colombia,27.01,
-Ryan Kelly,Male,Ireland,25.35,
+Gabriel Silva,Male,Brazil,27.71,0
+Finn van der Kerg,Male,Netherlands,27.53,0
+Mateo Garcia,Male,Colombia,27.01,0
+Ryan Kelly,Male,Ireland,25.35,0
+Adam Novák,Male,Czech Republic,47.93,1
+Hugo Fernández,Male,Spain,45.56,1
+Charlie Wilson,Male,England,45.1,1
+Lukas Kazlauskas,Male,Lithuania,44.11,1
+Sofia Martinez,Female,Argentina,43.69,1
+Gareth Williams,Male,Wales,41.96,1
+Lucas de Jong,Male,Netherlands,41.73,1
+Maximilian Sägemann,Male,Germany,41.46,1
+Harry Jones,Male,England,45.68,1
+Lukas Ragedanzk,Male,Germany,38.69,1
+Louis Dubois,Male,France,42.15,2
+Ryan Fraser,Male,Scotland,38.63,2
+Ethan Taylor,Male,Australia,40.16,2
+Owen Jones,Male,Wales,39.88,2
+Noah Wilson,Male,New Zealand,37.35,2
+Emily Johnson,Female,England,36.29,2
+Leo Evans,Male,England,36.15,2
+Sophia Filster,Female,Germany,35.77,2
+Rhys Evans,Male,Wales,34.59,2
+PLAYER,,,,2
+Gabriel Martin,Male,France,35.65,3
+George Williams,Male,England,34.47,3
+Jonas Meinhard,Male,Germany,35.66,3
+Jack Taylor,Male,England,35.2,3
+Sean O'Brien,Male,Ireland,33.1,3
+Noah Davies,Male,England,32.25,3
+Liam Stewart,Male,Scotland,31.91,3
+Levi van Dijk,Male,Netherlands,31.84,3
+Jakub Nowakicz,Male,Poland,32.61,3
+Amelia Brown,Female,England,32.44,3
+Oliver Smith,Male,England,30.12,4
+Matilde Santos,Female,Portugal,28.77,4
+Conor Murphy,Male,Ireland,31.58,4
+Lucas Peeters,Male,Belgium,30.27,4
+Aiden MacDonald,Male,Scotland,29.69,4
+Owen Carter,Male,England,29.07,4
+Dylan Thomas,Male,Wales,28.12,4
+Dennis Jones,Male,USA,23.73,4
+Alexander Kuhn,Male,Germany,36.1,4
+Kalle Toivonen,Male,Finland,29.68,4
