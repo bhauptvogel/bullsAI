@@ -13,7 +13,7 @@ def draw_graph(player_name: str, stat_id: str) -> None:
         raise ValueError('Player not found in players.csv')
 
     # Get all game ids player has played
-    league = player['League'].values[0]
+    league = int(player['League'].values[0])
     schedule = pd.read_csv(f'fantasy/schedule_league_{league}.csv')
     player_games = schedule[(schedule['Home Player'] == player_name) | (schedule['Away Player'] == player_name)]
     played_games = player_games['Game Log'].dropna().values
