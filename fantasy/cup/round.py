@@ -9,7 +9,7 @@ def get_player_average(name: str) -> float:
     players = pd.read_csv(f'fantasy/cup/cup_players.csv')
     return float(players[players['Name'] == name]['AVG'].values[0])
 
-def sim_leg(player_home_avg: str, player_away_avg: str, player_beginning: str, total_points: int):
+def sim_leg(player_home_avg: str, player_away_avg: str, player_beginning: int, total_points: int):
     player_1_points = total_points
     player_2_points = total_points
     player_1_std = empirical_std.emperical_std(player_home_avg)
