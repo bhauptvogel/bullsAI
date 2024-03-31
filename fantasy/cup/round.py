@@ -125,7 +125,7 @@ def play(round: int):
             game_id = str(uuid.uuid4())
             opponent_average = get_player_average(player1) if player2 == 'PLAYER' else get_player_average(player2)
             opponent_name = player1 if player2 == 'PLAYER' else player2
-            first_to_throw = random.randint(1, 2)
+            first_to_throw = random.choice(['bot', 'player'])
             legs_to_win = 3 + round
             result = handle_game(game_id=game_id, bot_average=opponent_average, sets_to_win=1, legs_to_win=legs_to_win, first_to_throw=first_to_throw, starting_points=501, bot_name=opponent_name, save_log_location='fantasy/cup/game_logs/')
 
