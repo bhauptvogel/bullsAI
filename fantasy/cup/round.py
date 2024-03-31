@@ -53,8 +53,8 @@ def sim_leg(player_home_avg: str, player_away_avg: str, player_beginning: str, t
 
 import argparse
 
-def show():
-    players = pd.read_csv(f'fantasy/cup/cup_players.csv')
+def show(players: pd.DataFrame):
+    print('Matchups...')
     left = len(players)
 
     for i in range(int(left/2)):
@@ -63,10 +63,8 @@ def show():
 
         print(f'Match {i+1}: {player1} vs {player2}')
 
-def simulate(round: int):
-    # TODO: Only take players that have not lost yet (from results.csv)
+def simulate(round: int, players: pd.DataFrame):
     print("Simulating...")
-    players = pd.read_csv(f'fantasy/cup/cup_players.csv')
     left = len(players)
     results = pd.read_csv(f'fantasy/cup/results.csv')
     for i in range(int(left/2)):
@@ -110,12 +108,10 @@ def simulate(round: int):
     results.to_csv(f'fantasy/cup/results.csv', index=False)
 
 
-def play(round: int):
+def play(round: int, players: pd.DataFrame):
     print("Playing...")
 
-    players = pd.read_csv(f'fantasy/cup/cup_players.csv')
     left = len(players)
-    results = pd.read_csv(f'fantasy/cup/results.csv')
     for i in range(int(left/2)):
         player1 = players.iloc[i]['Name']
         player2 = players.iloc[left-1 - i]['Name']
@@ -128,26 +124,50 @@ def play(round: int):
             first_to_throw = random.choice(['bot', 'player'])
             legs_to_win = 3 + round
             result = handle_game(game_id=game_id, bot_average=opponent_average, sets_to_win=1, legs_to_win=legs_to_win, first_to_throw=first_to_throw, starting_points=501, bot_name=opponent_name, save_log_location='fantasy/cup/game_logs/')
+            print(result)
+
+def get_remaining_players():
+    players = pd.read_csv(f'fantasy/cup/cup_players.csv')
+    results = pd.read_csv(f'fantasy/cup/results.csv')
+
+    if len(results) == 0: return players
+
+    for game in results.iterrows():
+        player1 = game[1]['Player 1']
+        player2 = game[1]['Player 2']
+        result = game[1]['Result'] # f.e. '4 - 1'
+        # winner = player1 if int(result[0]) > int(result[4]) else player2
+        loser = player1 if int(result[0]) < int(result[4]) else player2
+
+        # remove loser from players
+        players = players[players['Name'] != loser]
+    
+    return players
 
 def main():
+    import math
+    players = get_remaining_players()
+
     parser = argparse.ArgumentParser(description="Process some commands.")
     parser.add_argument("--show", action="store_true", help="Execute the show command")
     parser.add_argument("--simulate", action="store_true", help="Execute the simulate command")
     parser.add_argument("--play", action="store_true", help="Execute the play command")
-    parser.add_argument("--round", default=1, type=int, help="Specify the round number")
+    parser.add_argument("--round", default=int(math.log2(32) + 1 - math.log2(len(players))), type=int, help="Specify the round number")
 
     args = parser.parse_args()
+
+    print(['Round of 32', 'Round of 16', 'Quarterfinals', 'Semifinals', 'Finals'][args.round - 1])
 
     # If no arguments are provided, default to show
     if not any(vars(args).values()):
         show()
     else:
         if args.show:
-            show()
+            show(players=get_remaining_players())
         if args.simulate:
-            simulate(args.round)
+            simulate(round=args.round, players=get_remaining_players())
         if args.play:
-            play(args.round)
+            play(round=args.round, players=get_remaining_players())
 
 if __name__ == "__main__":
     main()
